@@ -67,7 +67,9 @@ function iconInner(name){return (ICONS[name]||'').replace(/^<svg[^>]*>/,'').repl
 const IMGS={
  gazelle:'gazelle.png', family:'family.jpeg', mosque:'mosque.jpeg', dallah:'dallah.jpeg',
  palm:'palm.png', fort1:'fort1.jpeg', fort2:'fort2.jpeg', beads:'beads.jpg',
- crescent:'crescent.jpg', dua:'dua.png', charity:'charity.png', honesty:'honesty.jpeg'
+ crescent:'crescent.jpg', dua:'dua.png', charity:'charity.png', honesty:'honesty.jpeg',
+ traffic:'traffic.jpeg', park:'park.jpg', diyafa:'diyafa.jpg', urs:'urs.jpg',
+ falcon:'falcon.png', camel:'camel.png', handshake:'uaehands.jpg'
 };
 function pic(name,px){
   if(IMGS[name])return '<span class="ic" style="width:'+px+'px;height:'+px+'px">'
@@ -537,11 +539,14 @@ window.tnShow=(i,btn)=>{
 
 /* مشاهد بصور المستخدم الملوّنة */
 const SCENE_IMG={
-  dawn:  {img:'mosque', fit:'contain', bg:'linear-gradient(180deg,#dff1ff,#fff8e8)'},
-  dates: {img:'dallah', fit:'contain', bg:'#ffffff'},
-  union: {img:'family', fit:'cover'},
-  majlis:{img:'family', fit:'cover'},
-  falcon:{img:'palm',   fit:'contain', bg:'linear-gradient(180deg,#ffe9b8,#ffd990)'}
+  dawn:  {img:'mosque',  fit:'contain', bg:'linear-gradient(180deg,#dff1ff,#fff8e8)'},
+  dates: {img:'dallah',  fit:'contain', bg:'#ffffff'},
+  union: {img:'family',  fit:'cover'},
+  rules: {img:'traffic', fit:'cover'},
+  clean: {img:'park',    fit:'cover'},
+  majlis:{img:'diyafa',  fit:'cover'},
+  arts:  {img:'urs',     fit:'cover'},
+  falcon:{img:'palm',    fit:'contain', bg:'linear-gradient(180deg,#ffe9b8,#ffd990)'}
 };
 function sceneBG(k){return ({
   dawn:'linear-gradient(180deg,#ffd59e,#ffb27a,#e88b5a)',
