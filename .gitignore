@@ -1,2 +1,5 @@
 .claude/
 dist/
+/*.png
+/*.jpg
+/*.jpeg
