@@ -272,7 +272,7 @@ const CH = [
    past:'كان المسجد قلب القرية: فيه يصلّون ويتعلمون القراءة ويحلّون خلافاتهم ويجتمعون في الأفراح والأحزان.',
    now:'ما تزال الإمارات تبني المساجد الجميلة، وتجعل التسامح والرحمة أساس العيش بين أكثر من ٢٠٠ جنسية تعيش على أرضها.'
   },
-  gameTitle:'وصّل الأنوار', gameDesc:'صِل كل رمزين متشابهين بخيط النور — لكن انتبه: الخطوط لا يجوز أن تتقاطع! اضغط نقطة موصولة لفكّ خطها.',
+  gameTitle:'وصّل الأنوار', gameDesc:'اسحب بإصبعك داخل الشبكة لتمدّ أنبوب النور من كل رمز إلى توأمه. الأنابيب تمشي في المربعات ولا يجوز أن تتقاطع!',
   winMsg:'وصلت الأنوار كلها فأضاءت القرية! هكذا يجمع الخيرُ القلوب.'
  },
  {
@@ -631,140 +631,140 @@ let stopAllGames=()=>{};
 function wrapStage(node){const s=document.createElement('div'); s.className='game-stage'; s.appendChild(node); return s;}
 function wait(ms){return new Promise(r=>setTimeout(r,ms));}
 
-/* ---------- GAME 1: وصّل الأنوار (قاعدة Flow Free: الخطوط لا تتقاطع) ---------- */
-const CN_LEVELS=[
- {list:['mosque','crescent','dallah'], H:250, r:27},
- {list:['palm','beads','star','palm','beads','star'], H:340, r:22},
- {list:['mosque','crescent','dallah','mosque','crescent','dallah','palm','beads','fort1'], H:420, r:18}
-];
-let cn={};
-function initConnect(){cn={level:0}; buildConnect(); stopAllGames=()=>{};}
-/* هندسة: تقاطع قطعتين + بعد نقطة عن قطعة */
-function segInt(p,q,a,b){
-  function o(ax,ay,bx,by,cx,cy){const v=(by-ay)*(cx-bx)-(bx-ax)*(cy-by); return v>1e-9?1:(v<-1e-9?2:0);}
-  const o1=o(p.x,p.y,q.x,q.y,a.x,a.y),o2=o(p.x,p.y,q.x,q.y,b.x,b.y),
-        o3=o(a.x,a.y,b.x,b.y,p.x,p.y),o4=o(a.x,a.y,b.x,b.y,q.x,q.y);
-  return o1!==o2&&o3!==o4;
-}
-function distPS(px,py,ax,ay,bx,by){const dx=bx-ax,dy=by-ay,L2=dx*dx+dy*dy;
-  let t=L2?((px-ax)*dx+(py-ay)*dy)/L2:0; t=Math.max(0,Math.min(1,t));
-  return Math.hypot(ax+t*dx-px, ay+t*dy-py);}
-/* توليد مستوى قابل للحل دائمًا: نرسم الحل (قطع غير متقاطعة) ثم نخفيه */
-function genSegments(n,W,H,r){
-  for(let tries=0;tries<60;tries++){
-    const dots=[],segs=[]; let ok=true;
-    for(let s=0;s<n&&ok;s++){
-      let placed=false;
-      for(let a=0;a<600;a++){
-        const p={x:r+8+Math.random()*(W-2*r-16), y:r+8+Math.random()*(H-2*r-16)};
-        const ang=Math.random()*Math.PI*2, len=r*2.8+Math.random()*130;
-        const q={x:p.x+Math.cos(ang)*len, y:p.y+Math.sin(ang)*len};
-        if(q.x<r+8||q.x>W-r-8||q.y<r+8||q.y>H-r-8)continue;
-        if(dots.some(d=>Math.hypot(d.x-p.x,d.y-p.y)<r*2.25||Math.hypot(d.x-q.x,d.y-q.y)<r*2.25))continue;
-        if(segs.some(g=>segInt(p,q,g.p,g.q)))continue;
-        if(dots.some(d=>distPS(d.x,d.y,p.x,p.y,q.x,q.y)<r*1.7))continue;
-        if(segs.some(g=>distPS(p.x,p.y,g.p.x,g.p.y,g.q.x,g.q.y)<r*1.7
-                      ||distPS(q.x,q.y,g.p.x,g.p.y,g.q.x,g.q.y)<r*1.7))continue;
-        dots.push(p,q); segs.push({p,q}); placed=true; break;
+/* ---------- GAME 1: وصّل الأنوار — شبكة أنابيب مثل Flow Free ---------- */
+const FG_LEVELS=[{N:5,K:4},{N:6,K:5},{N:7,K:6}];
+const FG_COLORS=['#e63946','#2563eb','#f4c430','#16a34a','#f97316','#9333ea'];
+const FG_ICONS=['mosque','crescent','dallah','palm','beads','fort1'];
+let fg={};
+function initConnect(){fg={level:0}; buildFlow(); stopAllGames=()=>{};}
+function fgNb(c,N){const x=c%N,y=(c/N)|0,r=[];
+  if(x>0)r.push(c-1); if(x<N-1)r.push(c+1); if(y>0)r.push(c-N); if(y<N-1)r.push(c+N); return r;}
+/* توليد لوحة قابلة للحل دائمًا: نحفر مسارات متعرجة غير متقاطعة ثم نظهر طرفيها فقط */
+function fgCarve(N,K){
+  for(let t=0;t<900;t++){
+    const used=Array(N*N).fill(-1), paths=[]; let ok=true;
+    for(let k=0;k<K&&ok;k++){
+      const free=[]; used.forEach((v,i)=>{if(v<0)free.push(i);});
+      if(!free.length){ok=false;break;}
+      let cur=free[(Math.random()*free.length)|0];
+      const path=[cur]; used[cur]=k;
+      const target=4+((Math.random()*(N+2))|0);
+      while(path.length<target){
+        const nb=fgNb(cur,N).filter(c=>used[c]<0);
+        if(!nb.length)break;
+        cur=nb[(Math.random()*nb.length)|0]; used[cur]=k; path.push(cur);
       }
-      if(!placed)ok=false;
+      if(path.length<3)ok=false; else paths.push(path);
     }
-    if(ok)return segs;
+    if(ok)return paths;
   }
   return null;
 }
-function buildConnect(){
-  const L=CN_LEVELS[cn.level], W=320;
-  const list=[...L.list].sort(()=>Math.random()-.5);
-  let r=L.r, segs=null;
-  while(!(segs=genSegments(list.length,W,L.H,r)) && r>10) r-=2;
-  cn.r=r; cn.links=[]; cn.sel=-1; cn.left=list.length; cn.linkSeq=0;
-  cn.dots=[];
-  segs.forEach((g,i)=>{
-    cn.dots.push({icon:list[i], x:g.p.x, y:g.p.y, link:-1});
-    cn.dots.push({icon:list[i], x:g.q.x, y:g.q.y, link:-1});
-  });
+function buildFlow(){
+  const L=FG_LEVELS[fg.level], N=L.N;
+  let sol=fgCarve(N,L.K);
+  fg.N=N; fg.cell=44; fg.S=N*44;
+  fg.pairs=sol.map((p,k)=>({icon:FG_ICONS[k],color:FG_COLORS[k],a:p[0],b:p[p.length-1],sol:p,path:[],done:false}));
+  fg.drawing=-1;
   const wrap=document.getElementById('gameBody'); wrap.innerHTML='';
   const host=document.createElement('div'); host.className='cn-host';
-  let svg='<svg viewBox="0 0 '+W+' '+L.H+'"><g id="cnLines"></g><g id="cnTemp"></g>';
-  cn.dots.forEach((d,i)=>{
-    const s=r*1.3, o=-s/2;
-    const inner=IMGS[d.icon]
-      ? '<image href="img/'+IMGS[d.icon]+'" x="'+o+'" y="'+o+'" width="'+s+'" height="'+s+'"/>'
-      : '<g transform="translate('+o+','+o+') scale('+(s/48).toFixed(3)+')">'+iconInner(d.icon)+'</g>';
-    svg+='<g class="cn-dot" data-i="'+i+'" transform="translate('+d.x.toFixed(1)+','+d.y.toFixed(1)+')" style="cursor:pointer">'
-      +'<circle r="'+r+'" fill="#fffdf7" stroke="#d8c9a4" stroke-width="3"/>'
-      +inner
-      +'<circle r="'+(r+7)+'" fill="transparent"/>'
-      +'</g>';
-  });
-  svg+='</svg>';
+  const S=fg.S, cell=fg.cell;
+  let svg='<svg id="fgSvg" viewBox="0 0 '+S+' '+S+'" style="touch-action:none;border-radius:18px;display:block">';
+  svg+='<rect width="'+S+'" height="'+S+'" rx="16" fill="#1b1b1f"/>';
+  for(let i=1;i<N;i++){
+    svg+='<line x1="'+(i*cell)+'" y1="4" x2="'+(i*cell)+'" y2="'+(S-4)+'" stroke="#33333a" stroke-width="1.5"/>';
+    svg+='<line y1="'+(i*cell)+'" x1="4" y2="'+(i*cell)+'" x2="'+(S-4)+'" stroke="#33333a" stroke-width="1.5"/>';
+  }
+  svg+='<g id="fgFill"></g><g id="fgPaths"></g><g id="fgEnds"></g></svg>';
   host.innerHTML=svg;
   wrap.appendChild(wrapStage(host));
-  host.querySelectorAll('.cn-dot').forEach(el=>el.addEventListener('click',()=>cnTap(+el.dataset.i)));
+  const el=document.getElementById('fgSvg');
+  const cellAt=e=>{const r=el.getBoundingClientRect();
+    const x=(e.clientX-r.left)/r.width*S, y=(e.clientY-r.top)/r.height*S;
+    const cx=Math.floor(x/cell), cy=Math.floor(y/cell);
+    if(cx<0||cy<0||cx>=N||cy>=N)return -1; return cy*N+cx;};
+  el.addEventListener('pointerdown',e=>{e.preventDefault(); el.setPointerCapture(e.pointerId);
+    const c=cellAt(e); if(c>=0)fgDown(c);});
+  el.addEventListener('pointermove',e=>{if(fg.drawing<0)return;
+    const c=cellAt(e); if(c>=0)fgDrag(c);});
+  el.addEventListener('pointerup',()=>{fg.drawing=-1;});
   document.getElementById('gameFoot').innerHTML=
-    '<span class="pill">المرحلة: '+AR_N[cn.level+1]+' / ٣</span>'
-    +'<span class="pill goldy" id="cnLeft">الأزواج المتبقية: '+cn.left+'</span>'
-    +'<button class="btn ghost" id="cnReset" style="padding:9px 14px">'+ic('refresh',18)+'</button>';
-  document.getElementById('cnReset').onclick=buildConnect;
+    '<span class="pill">المرحلة: '+AR_N[fg.level+1]+' / ٣</span>'
+    +'<span class="pill goldy" id="fgLeft">وصلت: 0 / '+fg.pairs.length+'</span>'
+    +'<button class="btn ghost" id="fgReset" style="padding:9px 14px">'+ic('refresh',18)+'</button>';
+  document.getElementById('fgReset').onclick=()=>{fg.pairs.forEach(p=>{p.path=[];p.done=false;});
+    fg.drawing=-1; fgRender(); Snd.flip();};
+  fgRender();
 }
-function cnDotEl(i){return document.querySelector('.cn-dot[data-i="'+i+'"]');}
-function cnSetSel(i,on){
-  const el=cnDotEl(i); if(!el)return;
-  const c=el.querySelector('circle');
-  c.setAttribute('stroke',on?'#c9a227':'#d8c9a4');
-  c.setAttribute('stroke-width',on?'5':'3');
-}
-function cnUnlink(li){
-  const l=cn.links.find(x=>x.id===li); if(!l)return;
-  document.getElementById('l'+li)?.remove();
-  [l.a,l.b].forEach(k=>{cn.dots[k].link=-1;
-    const el=cnDotEl(k); el.style.opacity=1;
-    const c=el.querySelector('circle'); c.setAttribute('stroke','#d8c9a4'); c.setAttribute('stroke-width','3');});
-  cn.links=cn.links.filter(x=>x.id!==li);
-  cn.left++; document.getElementById('cnLeft').textContent='الأزواج المتبقية: '+cn.left;
-  Snd.flip(); toast('أزلتَ الخط');
-}
-function cnTap(i){
-  const d=cn.dots[i];
-  if(d.link>=0){cnUnlink(d.link); cn.sel=-1; return;}       /* اضغط نقطة موصولة لفكّها */
-  if(cn.sel===i){cnSetSel(i,false); cn.sel=-1; return;}
-  if(cn.sel<0){cn.sel=i; cnSetSel(i,true); Snd.ding(); return;}
-  const pi=cn.sel, p=cn.dots[pi];
-  if(p.icon!==d.icon){
-    Snd.buzz();
-    [i,pi].forEach(k=>{const c=cnDotEl(k).querySelector('circle');
-      c.setAttribute('stroke','#c8102e');
-      setTimeout(()=>{if(cn.dots[k].link<0){c.setAttribute('stroke','#d8c9a4'); c.setAttribute('stroke-width','3');}},450);});
-    cn.sel=-1; return;
+function fgOccupied(c,except){ /* هل الخلية مشغولة بمسار أو طرف زوج آخر */
+  for(let k=0;k<fg.pairs.length;k++){
+    if(k===except)continue;
+    const p=fg.pairs[k];
+    if(p.a===c||p.b===c)return true;
+    if(p.path.includes(c))return true;
   }
-  /* قاعدة Flow Free: الخط الجديد لا يقطع خطًا موجودًا ولا يمرّ فوق نقطة */
-  const crosses = cn.links.some(l=>segInt(p,d,cn.dots[l.a],cn.dots[l.b]));
-  const overDot = cn.dots.some((o,k)=>k!==i&&k!==pi&&distPS(o.x,o.y,p.x,p.y,d.x,d.y)<cn.r*1.5);
-  if(crosses||overDot){
-    Snd.buzz(); toast(crosses?'الخطوط لا يجوز أن تتقاطع!':'الخط يمرّ فوق نقطة أخرى!');
-    const tmp=document.getElementById('cnTemp');
-    tmp.innerHTML='<line x1="'+p.x+'" y1="'+p.y+'" x2="'+d.x+'" y2="'+d.y
-      +'" stroke="#c8102e" stroke-width="4" stroke-dasharray="7 6" stroke-linecap="round" opacity=".85"/>';
-    setTimeout(()=>{tmp.innerHTML='';},650);
-    cnSetSel(pi,false); cn.sel=-1; return;
+  return false;
+}
+function fgDown(c){
+  const k=fg.pairs.findIndex(p=>p.a===c||p.b===c);
+  if(k>=0){const p=fg.pairs[k]; p.done=false; p.path=[c]; fg.drawing=k; Snd.ding(); fgRender(); return;}
+  const k2=fg.pairs.findIndex(p=>p.path.includes(c));
+  if(k2>=0){const p=fg.pairs[k2]; p.done=false;
+    p.path=p.path.slice(0,p.path.indexOf(c)+1); fg.drawing=k2; fgRender();}
+}
+function fgDrag(c){
+  const p=fg.pairs[fg.drawing]; if(!p)return;
+  let guard=fg.N*3;
+  while(guard-->0){
+    let last=p.path[p.path.length-1];
+    if(c===last)break;
+    const N=fg.N, lx=last%N, ly=(last/N)|0, cx=c%N, cy=(c/N)|0;
+    const dx=cx-lx, dy=cy-ly;
+    let n;
+    if(Math.abs(dx)>=Math.abs(dy)&&dx!==0) n=last+(dx>0?1:-1);
+    else if(dy!==0) n=last+(dy>0?N:-N);
+    else break;
+    const start=p.path[0], partner=(start===p.a?p.b:p.a);
+    if(n===partner){p.path.push(n); p.done=true; fg.drawing=-1; Snd.star(); fgRender(); fgCheckWin(); return;}
+    if(p.path.includes(n)){p.path=p.path.slice(0,p.path.indexOf(n)+1); continue;}
+    if(fgOccupied(n,fg.drawing))break;   /* لا عبور فوق مسار آخر */
+    p.path.push(n);
   }
-  /* وصل صحيح */
-  const id=cn.linkSeq++;
-  p.link=d.link=id;
-  cn.links.push({id,a:pi,b:i});
-  document.getElementById('cnLines').insertAdjacentHTML('beforeend',
-    '<line id="l'+id+'" x1="'+p.x+'" y1="'+p.y+'" x2="'+d.x+'" y2="'+d.y
-    +'" stroke="#c9a227" stroke-width="5" stroke-linecap="round" opacity=".85"/>');
-  cnSetSel(pi,false);
-  [i,pi].forEach(k=>{const el=cnDotEl(k);
-    el.querySelector('circle').setAttribute('stroke','#0b7a4b'); el.style.opacity=.92;});
-  cn.sel=-1; cn.left--; Snd.star();
-  document.getElementById('cnLeft').textContent='الأزواج المتبقية: '+cn.left;
-  if(cn.left===0){
-    if(cn.level<2){cn.level++; toast('أحسنت! المرحلة التالية أصعب','star'); setTimeout(buildConnect,850);}
+  fgRender();
+}
+function fgCheckWin(){
+  const done=fg.pairs.filter(p=>p.done).length;
+  document.getElementById('fgLeft').textContent='وصلت: '+done+' / '+fg.pairs.length;
+  if(done===fg.pairs.length){
+    if(fg.level<2){fg.level++; toast('أحسنت! شبكة أكبر في المرحلة التالية','star'); setTimeout(buildFlow,900);}
     else setTimeout(winChapter,400);
   }
+}
+function fgRender(){
+  const cell=fg.cell, half=cell/2;
+  const cx=c=>(c%fg.N)*cell+half, cy=c=>((c/fg.N)|0)*cell+half;
+  let fills='', lines='', ends='';
+  fg.pairs.forEach((p,k)=>{
+    p.path.forEach(c=>{
+      fills+='<rect x="'+((c%fg.N)*cell+2)+'" y="'+(((c/fg.N)|0)*cell+2)+'" width="'+(cell-4)+'" height="'+(cell-4)+'" rx="8" fill="'+p.color+'" opacity=".16"/>';
+    });
+    if(p.path.length>1){
+      const pts=p.path.map(c=>cx(c)+','+cy(c)).join(' ');
+      lines+='<polyline points="'+pts+'" fill="none" stroke="'+p.color+'" stroke-width="'+(cell*.34)+'" stroke-linecap="round" stroke-linejoin="round" opacity=".95"/>';
+    }
+    [p.a,p.b].forEach(c=>{
+      const s=cell*.42, o=s/2;
+      const inner=IMGS[p.icon]
+        ? '<image href="img/'+IMGS[p.icon]+'" x="'+(cx(c)-o)+'" y="'+(cy(c)-o)+'" width="'+s+'" height="'+s+'" clip-path="inset(0 round 6)"/>'
+        : '<g transform="translate('+(cx(c)-o)+','+(cy(c)-o)+') scale('+(s/48)+')">'+iconInner(p.icon)+'</g>';
+      ends+='<circle cx="'+cx(c)+'" cy="'+cy(c)+'" r="'+(cell*.4)+'" fill="'+p.color+'"'+(p.done?'':' opacity=".92"')+'/>'
+        +'<circle cx="'+cx(c)+'" cy="'+cy(c)+'" r="'+(cell*.3)+'" fill="#fffdf7"/>'
+        +inner;
+    });
+  });
+  document.getElementById('fgFill').innerHTML=fills;
+  document.getElementById('fgPaths').innerHTML=lines;
+  document.getElementById('fgEnds').innerHTML=ends;
 }
 
 /* ---------- GAME 2: المتاهة (مع مؤقت) ---------- */
