@@ -1,5 +1,5 @@
 /* ================================================================
-   ريم وعقد الهوية — كتاب تفاعلي (v2)
+   ريم وعقد الهوية — كتاب تفاعلي (v3: أيقونات مرسومة + صوت خليجي)
    ================================================================ */
 
 /* ---------- clock ---------- */
@@ -8,65 +8,158 @@ function tick(){const d=new Date();let h=d.getHours(),m=d.getMinutes();
 tick(); setInterval(tick,10000);
 
 /* ================================================================
-   SOUND ENGINE (WebAudio — ambient + sfx)
+   ICONS — مكتبة رموز إماراتية مرسومة (بديل كامل للإيموجي)
+   ================================================================ */
+const ICONS={
+mosque:`<svg viewBox="0 0 48 48"><rect x="8" y="26" width="32" height="14" rx="2" fill="#e9d3a0"/><path d="M8 26 q16 -16 32 0Z" fill="#0b7a4b"/><rect x="22.5" y="10" width="3" height="9" fill="#0b7a4b"/><circle cx="24" cy="8" r="2.5" fill="#c9a227"/><rect x="4" y="21" width="5" height="19" fill="#d6b97e"/><rect x="39" y="21" width="5" height="19" fill="#d6b97e"/><path d="M4 21 q2.5 -7 5 0Z" fill="#0b7a4b"/><path d="M39 21 q2.5 -7 5 0Z" fill="#0b7a4b"/><rect x="20" y="31" width="8" height="9" rx="4" fill="#7a5a2e"/></svg>`,
+flag:`<svg viewBox="0 0 48 48"><rect x="8" y="5" width="3" height="38" rx="1.5" fill="#8a7c63"/><rect x="11" y="8" width="8" height="18" fill="#c8102e"/><rect x="19" y="8" width="21" height="6" fill="#009a44"/><rect x="19" y="14" width="21" height="6" fill="#fff"/><rect x="19" y="20" width="21" height="6" fill="#1c1c1e"/></svg>`,
+camel:`<svg viewBox="0 0 48 48"><path d="M5 36 l2 -7 q1 -4 5 -4 h3 q2 0 3 -2 q1 -6 6 -7 q3 -0.6 4 2 l1 3 q4 1 5 5 l2 10 h-4 l-1.5 -7 h-2.5 l-1 7 h-4 l-1 -7 h-6 l-1 7 h-4 l-0.7 -7 h-1.8 l-1 7Z" fill="#b98a4e"/><path d="M22 17 q2 -7 6.5 -7.5 l-1 6.5Z" fill="#a8804a"/><path d="M27 9 q4 -2 5 1.5 q-1 2.5 -5 2.5Z" fill="#b98a4e"/><circle cx="30.5" cy="11" r="1" fill="#241c10"/></svg>`,
+dallah:`<svg viewBox="0 0 48 48"><path d="M17 41 h14 l2 -4 h-18Z" fill="#8a6a1a"/><path d="M17 37 q-3.5 -10 1.5 -16 h11 q5 6 1.5 16Z" fill="#c9a227"/><path d="M19 21 l-1.5 -4 h13 l-1.5 4Z" fill="#b98d1c"/><path d="M23 17 l1 -5.5 l1 5.5Z" fill="#8a6a1a"/><circle cx="24" cy="9.5" r="2.2" fill="#c9a227"/><path d="M14 23 q-6 2 -4.5 9 q3.5 1 5.5 -1.5" fill="none" stroke="#b98d1c" stroke-width="2.6" stroke-linecap="round"/><path d="M32 23 q6 -4 6.5 -11" fill="none" stroke="#b98d1c" stroke-width="2.6" stroke-linecap="round"/></svg>`,
+palm:`<svg viewBox="0 0 48 48"><path d="M22 42 q1.2 -13 0.4 -21 q3 8 4.2 21Z" fill="#8a5a2e"/><g stroke="#0b7a4b" stroke-width="3.4" fill="none" stroke-linecap="round"><path d="M23 20 q-8 -6 -14 -2"/><path d="M23 20 q8 -6 14 -2"/><path d="M23 19 q-6 -8 -12 -9"/><path d="M23 19 q6 -8 12 -9"/><path d="M23 18 q0.5 -8 1.5 -10"/></g><circle cx="20" cy="22.5" r="2" fill="#c9a227"/><circle cx="26" cy="22.5" r="2" fill="#c9a227"/></svg>`,
+falcon:`<svg viewBox="0 0 48 48"><path d="M13 29 q-2 -14 11 -18 q12 -3.5 14 5.5 q1 4 -2 5 l-6 1.5 q-2 6 -8 8 q-5.5 1.4 -9 -2Z" fill="#8a6a45"/><path d="M35 15 q4.5 0.5 3.6 4 l-5.6 1Z" fill="#c9a227"/><circle cx="30" cy="15" r="2" fill="#241c10"/><path d="M13 29 q6 4 12 2.4 l-2 6.6 q-6.5 2 -10.5 -2Z" fill="#6b4a2a"/><path d="M18 18 q6 -4 12 -3" stroke="#6b4a2a" stroke-width="1.6" fill="none"/></svg>`,
+dhow:`<svg viewBox="0 0 48 48"><path d="M8 31 h32 l-6 8 h-20Z" fill="#8a5a2e"/><path d="M24 7 v24" stroke="#6b3f1d" stroke-width="2.5"/><path d="M25.5 9 q14 9 1 20Z" fill="#f3e7c8"/><path d="M22.5 12 q-10 8 -0.5 17Z" fill="#e8d8b8"/><path d="M5 42 q6 3 12 0 q6 3 12 0 q6 3 14 0" stroke="#4fa3cf" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>`,
+fort:`<svg viewBox="0 0 48 48"><rect x="13" y="14" width="22" height="26" fill="#d6b97e"/><path d="M13 14 v-5 h4 v5 M22 14 v-5 h4 v5 M31 14 v-5 h4 v5" fill="#c7ad78"/><rect x="13" y="14" width="22" height="3" fill="#c7ad78"/><rect x="21" y="27" width="6" height="13" rx="3" fill="#7a5a2e"/><rect x="17" y="19" width="4" height="5" rx="2" fill="#8a6a45"/><rect x="27" y="19" width="4" height="5" rx="2" fill="#8a6a45"/></svg>`,
+drum:`<svg viewBox="0 0 48 48"><path d="M11 15 v17 q13 8 26 0 v-17" fill="#a8431f"/><path d="M11 20 l8 6 -8 6 M37 20 l-8 6 8 6" stroke="#e8d8b8" stroke-width="2" fill="none"/><ellipse cx="24" cy="15" rx="13" ry="5" fill="#e8d8b8"/><ellipse cx="24" cy="15" rx="9" ry="3.2" fill="#f3ead2"/></svg>`,
+pottery:`<svg viewBox="0 0 48 48"><path d="M19 9 h10 l-1 4 q8 4 6.5 14 q-1.6 11 -9.5 11 q-7.9 0 -9.5 -11 q-1.5 -10 6.5 -14Z" fill="#a8431f"/><path d="M16.5 22 h15" stroke="#7c2d12" stroke-width="2"/><path d="M18 27 h12" stroke="#7c2d12" stroke-width="1.4" opacity=".7"/></svg>`,
+shell:`<svg viewBox="0 0 48 48"><path d="M8 26 q16 -19 32 0 q-8 13 -16 13 q-8 0 -16 -13Z" fill="#e8c8a0"/><path d="M12 25 q12 -13 24 0 M16 24 q8 -8 16 0" stroke="#c79a6b" stroke-width="1.8" fill="none"/><circle cx="24" cy="29" r="5.5" fill="#f3efe4"/><circle cx="22" cy="27" r="1.8" fill="#fff"/></svg>`,
+star:`<svg viewBox="0 0 48 48"><path d="M24 5 l5.2 11.4 12.4 1.5 -9.2 8.4 2.5 12.3 -10.9 -6.2 -10.9 6.2 2.5 -12.3 -9.2 -8.4 12.4 -1.5Z" fill="#f4c430" stroke="#d9a616" stroke-width="1.6" stroke-linejoin="round"/></svg>`,
+home:`<svg viewBox="0 0 48 48"><path d="M7 24 L24 9 L41 24" fill="none" stroke="#0b7a4b" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 22 v18 h24 v-18" fill="#0b7a4b"/><rect x="20" y="28" width="8" height="12" rx="1.5" fill="#fffdf7"/></svg>`,
+heart:`<svg viewBox="0 0 48 48"><path d="M24 41 C10 31 5.5 22.5 9.5 15.5 q5 -8.5 14.5 0.5 q9.5 -9 14.5 -0.5 c4 7 -0.5 15.5 -14.5 25.5Z" fill="#c8102e"/></svg>`,
+heartEmpty:`<svg viewBox="0 0 48 48"><path d="M24 41 C10 31 5.5 22.5 9.5 15.5 q5 -8.5 14.5 0.5 q9.5 -9 14.5 -0.5 c4 7 -0.5 15.5 -14.5 25.5Z" fill="#d8d2c2"/></svg>`,
+basket:`<svg viewBox="0 0 48 48"><path d="M10 19 q14 -13 28 0" fill="none" stroke="#8a5a2e" stroke-width="3.2"/><path d="M6 19 h36 l-5 21 h-26Z" fill="#c9a227"/><path d="M6 19 h36 l-1.6 6.5 h-32.8Z" fill="#b98d1c"/><path d="M14 26 v11 M24 26 v13 M34 26 v11" stroke="#8a6a1a" stroke-width="2.5"/></svg>`,
+gazelleMini:`<svg viewBox="0 0 48 48"><path d="M9 35 q0 -9 10 -9 h9 q8 0 8 7 l-1.6 8 h-3.4 l-1 -6 h-12 l-1 6 h-3.4Z" fill="#c99e60"/><path d="M32 27 q3.5 -6 2 -13 l3 -1.6" fill="none" stroke="#c99e60" stroke-width="4.4" stroke-linecap="round"/><circle cx="38" cy="11.5" r="4.4" fill="#c99e60"/><path d="M36 8 q-2.4 -4.6 0.6 -8 M40.5 8 q-0.4 -4.6 3 -7" stroke="#5d4526" stroke-width="2" fill="none" stroke-linecap="round"/><circle cx="39.6" cy="10.4" r="0.9" fill="#241c10"/></svg>`,
+crescent:`<svg viewBox="0 0 48 48"><path d="M33 4 C17 6 8 18 10 30 C12 42 24 48 35 45 C25 42 19 34 19 23 C19 13 25 7 33 4Z" fill="#c9a227"/><path d="M36 12 l1.6 3.4 3.6 0.5 -2.6 2.5 0.6 3.6 -3.2 -1.7 -3.2 1.7 0.6 -3.6 -2.6 -2.5 3.6 -0.5Z" fill="#c9a227"/></svg>`,
+clock:`<svg viewBox="0 0 48 48"><circle cx="24" cy="25" r="16.5" fill="#fffdf7" stroke="#c8102e" stroke-width="3.4"/><path d="M24 15.5 v9.5 l7 5" stroke="#2b2418" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M12 7 l-5 5 M36 7 l5 5" stroke="#c8102e" stroke-width="3.4" stroke-linecap="round"/></svg>`,
+controller:`<svg viewBox="0 0 48 48"><rect x="5" y="15" width="38" height="19" rx="9.5" fill="#0b7a4b"/><path d="M14 20.5 v8 M10 24.5 h8" stroke="#fff" stroke-width="3" stroke-linecap="round"/><circle cx="32" cy="21.5" r="2.5" fill="#fff"/><circle cx="37" cy="26.5" r="2.5" fill="#fff"/></svg>`,
+refresh:`<svg viewBox="0 0 48 48"><path d="M39 21 a15.5 15.5 0 1 0 1.5 9" fill="none" stroke="#0b7a4b" stroke-width="4.4" stroke-linecap="round"/><path d="M40 8 v13 h-13" fill="none" stroke="#0b7a4b" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+soundOn:`<svg viewBox="0 0 48 48"><path d="M9 19 h7 l9 -8 v26 l-9 -8 h-7Z" fill="#0b7a4b"/><path d="M30 18 q4.5 6 0 12 M34.5 13.5 q7.5 10.5 0 21" stroke="#0b7a4b" stroke-width="3" fill="none" stroke-linecap="round"/></svg>`,
+soundOff:`<svg viewBox="0 0 48 48"><path d="M9 19 h7 l9 -8 v26 l-9 -8 h-7Z" fill="#8a7c63"/><path d="M31 19 l10 10 M41 19 l-10 10" stroke="#c8102e" stroke-width="3.4" stroke-linecap="round"/></svg>`,
+trophy:`<svg viewBox="0 0 48 48"><path d="M14 7 h20 v10 q0 10 -10 12.5 q-10 -2.5 -10 -12.5Z" fill="#f4c430"/><path d="M14 10 h-6.5 q0.5 10 8.5 12 M34 10 h6.5 q-0.5 10 -8.5 12" fill="none" stroke="#d9a616" stroke-width="3"/><rect x="20.5" y="29.5" width="7" height="6" fill="#d9a616"/><rect x="14" y="35.5" width="20" height="5.5" rx="2" fill="#8a6a1a"/></svg>`,
+burst:`<svg viewBox="0 0 48 48"><g stroke-width="3.4" stroke-linecap="round" fill="none"><path d="M24 4 v9" stroke="#c8102e"/><path d="M24 35 v9" stroke="#0b7a4b"/><path d="M4 24 h9" stroke="#c9a227"/><path d="M35 24 h9" stroke="#0a84ff"/><path d="M10 10 l6.5 6.5" stroke="#0b7a4b"/><path d="M31.5 31.5 l6.5 6.5" stroke="#c9a227"/><path d="M38 10 l-6.5 6.5" stroke="#c8102e"/><path d="M16.5 31.5 l-6.5 6.5" stroke="#0a84ff"/></g><circle cx="24" cy="24" r="5.5" fill="#f4c430"/></svg>`,
+oops:`<svg viewBox="0 0 48 48"><circle cx="23" cy="26" r="16" fill="#f4c430"/><circle cx="17.5" cy="23" r="2.3" fill="#241c10"/><circle cx="28.5" cy="23" r="2.3" fill="#241c10"/><path d="M17.5 33.5 q5.5 -4 11 0" stroke="#241c10" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M39 9 q4.5 5.5 0 9 q-4.5 -3.5 0 -9Z" fill="#0a84ff"/></svg>`,
+bookOpen:`<svg viewBox="0 0 48 48"><path d="M24 12 q-8 -5 -16 -3 v26 q8 -2 16 3 q8 -5 16 -3 v-26 q-8 -2 -16 3Z" fill="#fffdf7" stroke="#0b7a4b" stroke-width="3"/><path d="M24 12 v26" stroke="#0b7a4b" stroke-width="2"/><path d="M12 17 q4 -0.5 8 1 M12 23 q4 -0.5 8 1 M28 18 q4 -1.5 8 -1 M28 24 q4 -1.5 8 -1" stroke="#c9a227" stroke-width="1.7" fill="none" stroke-linecap="round"/></svg>`,
+hands:`<svg viewBox="0 0 48 48"><path d="M14 41 q-6.5 -10 -4.5 -20 q1 -4 4 -3 l2 6 q1 -9 4.5 -9 q3 0 3 6 v10 l-1 10Z" fill="#e7c891"/><path d="M34 41 q6.5 -10 4.5 -20 q-1 -4 -4 -3 l-2 6 q-1 -9 -4.5 -9 q-3 0 -3 6 v10 l1 10Z" fill="#dcb47a"/></svg>`,
+gift:`<svg viewBox="0 0 48 48"><rect x="8" y="18" width="32" height="7.5" rx="1.5" fill="#c8102e"/><rect x="10.5" y="25.5" width="27" height="14.5" rx="1.5" fill="#e04658"/><rect x="21" y="18" width="6" height="22" fill="#f4c430"/><path d="M24 18 q-8.5 -2 -8.5 -7 q6.5 -2.5 8.5 7 q2 -9.5 8.5 -7 q0 5 -8.5 7Z" fill="#f4c430"/></svg>`,
+handshake:`<svg viewBox="0 0 48 48"><rect x="2" y="19" width="11" height="12" rx="2.5" fill="#0a84ff"/><rect x="35" y="16" width="11" height="12" rx="2.5" fill="#0b7a4b"/><path d="M12 22 q6 -4 10 -1 l7 6 q2.5 2.5 0 5 t-5 0 l-3 -3" fill="none" stroke="#e7c891" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M36 19 q-6 -3 -10 0 l-8 7" fill="none" stroke="#dcb47a" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+rain:`<svg viewBox="0 0 48 48"><path d="M14 26 a8 8 0 1 1 2.5 -15.4 a10 10 0 0 1 19 3 a7 7 0 0 1 -2.5 12.4Z" fill="#cfd8e3"/><path d="M15.5 31 l-3 7.5 M24.5 31 l-3 7.5 M33.5 31 l-3 7.5" stroke="#0a84ff" stroke-width="3" stroke-linecap="round"/></svg>`,
+trafficLight:`<svg viewBox="0 0 48 48"><rect x="15.5" y="5" width="17" height="35" rx="6.5" fill="#2b2b2e"/><circle cx="24" cy="13.5" r="4.2" fill="#c8102e"/><circle cx="24" cy="22.5" r="4.2" fill="#f4c430"/><circle cx="24" cy="31.5" r="4.2" fill="#0b7a4b"/></svg>`,
+tree:`<svg viewBox="0 0 48 48"><path d="M22 42 q1.2 -9 0.4 -15 h4 q-1 6 0.2 15Z" fill="#8a5a2e"/><path d="M8 21 q-2.5 -12 12 -14 q14.5 -4 20.5 6 q4 8.5 -6 12.5 q-14.5 4 -26.5 -4.5Z" fill="#0b7a4b"/><path d="M14 15 q8 -4 18 -2" stroke="#0e9a5f" stroke-width="2" fill="none" stroke-linecap="round"/></svg>`,
+volunteer:`<svg viewBox="0 0 48 48"><path d="M10 41 q-4.5 -8 -2.5 -16.5 l6 2 v-12 q0 -3 3 -3 t3 3 v8 l10.5 2 q4 1 3.5 5 l-2 11.5Z" fill="#e7c891"/><path d="M30 7 c3 -3.4 8.5 0 6.4 4.4 c-1.2 2.2 -3.4 4.2 -6.4 6.2 c-3 -2 -5.2 -4 -6.4 -6.2 c-2.1 -4.4 3.4 -7.8 6.4 -4.4Z" fill="#c8102e"/></svg>`,
+globe:`<svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="16.5" fill="#bfe3ff" stroke="#0a84ff" stroke-width="3"/><path d="M7.5 24 h33 M24 7.5 a25 25 0 0 1 0 33 M24 7.5 a25 25 0 0 0 0 33" stroke="#0a84ff" stroke-width="2.2" fill="none"/></svg>`,
+speech:`<svg viewBox="0 0 48 48"><path d="M8 9 h32 q3 0 3 3 v17 q0 3 -3 3 h-17 l-9 9 v-9 h-6 q-3 0 -3 -3 v-17 q0 -3 3 -3Z" fill="#0b7a4b"/><text x="24" y="26" font-size="15" fill="#fff" text-anchor="middle" font-weight="bold" font-family="inherit">ع</text></svg>`,
+scroll:`<svg viewBox="0 0 48 48"><path d="M13 8 h25 v29 q0 4 -4 4 h-21 q-4 0 -4 -4 v-25 q0 -4 4 -4Z" fill="#f3e7c8"/><path d="M13 8 q-4 0 -4 4 t4 4 h4 v-8Z" fill="#d6b97e"/><path d="M19 18 h13 M19 24 h13 M19 30 h8" stroke="#8a6a45" stroke-width="2.4" stroke-linecap="round"/></svg>`,
+kandura:`<svg viewBox="0 0 48 48"><path d="M18 6 h12 l6.5 6 -4 4.5 -2.5 -2.5 v28 h-12 v-28 l-2.5 2.5 -4 -4.5Z" fill="#fffdf7" stroke="#cfc7b0" stroke-width="2"/><path d="M21.5 6 q2.5 3.5 5 0" stroke="#cfc7b0" stroke-width="2" fill="none"/><path d="M24 15 v9" stroke="#cfc7b0" stroke-width="2"/></svg>`,
+henna:`<svg viewBox="0 0 48 48"><path d="M16 42 q-4.5 -8 -3.5 -18 q0 -3 3 -3 l2 5 v-13 q0 -3 3 -3 q2.5 0 2.5 3 v-1.5 q0 -3 3 -3 t3 3 v3.5 q0 -2 2 -2 q3 0 3 3 v6 q3 -2 4 1 q2 5.5 -2 12.5 l-4 7.5Z" fill="#e7c891"/><g fill="#a8431f"><circle cx="24" cy="28" r="2"/><circle cx="20" cy="33" r="1.4"/><circle cx="28" cy="33" r="1.4"/></g><path d="M21.5 22 q2.5 -2.5 5 0" stroke="#a8431f" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>`,
+shield:`<svg viewBox="0 0 48 48"><path d="M24 5 q8 4 16.5 4.2 v14 q0 12.5 -16.5 19 q-16.5 -6.5 -16.5 -19 v-14 q8.5 -0.2 16.5 -4.2Z" fill="#0b7a4b"/><path d="M24 11.5 q5 2.5 10 3 v8.7 q0 8.3 -10 12.6Z" fill="#0e9a5f"/></svg>`,
+fish:`<svg viewBox="0 0 48 48"><path d="M7 24 q10.5 -12.5 22.5 -6 l9 -6.5 v25 l-9 -6.5 q-12 6.5 -22.5 -6Z" fill="#4fa3cf"/><circle cx="15" cy="22" r="1.9" fill="#fff"/><path d="M22 18 q4 5.5 0 12" stroke="#3b86ad" stroke-width="1.8" fill="none"/></svg>`,
+beads:`<svg viewBox="0 0 48 48"><g fill="#0b7a4b"><circle cx="12" cy="16" r="4"/><circle cx="19" cy="9.5" r="4"/><circle cx="29" cy="9.5" r="4"/><circle cx="36" cy="16" r="4"/><circle cx="39" cy="25.5" r="4"/><circle cx="9" cy="25.5" r="4"/><circle cx="13.5" cy="34.5" r="4"/><circle cx="34.5" cy="34.5" r="4"/></g><path d="M24 37.5 v5.5 M21.5 44 h5" stroke="#0b7a4b" stroke-width="3" stroke-linecap="round"/></svg>`,
+burger:`<svg viewBox="0 0 48 48"><path d="M8 20 q0 -10.5 16 -10.5 t16 10.5Z" fill="#e0a04e"/><rect x="8" y="21" width="32" height="5" rx="2.5" fill="#0b7a4b"/><rect x="7" y="27" width="34" height="6" rx="3" fill="#8a4a1f"/><path d="M8 35 q0 6 8 6 h16 q8 0 8 -6Z" fill="#e0a04e"/><circle cx="17" cy="15" r="1.2" fill="#fff8e8"/><circle cx="25" cy="13" r="1.2" fill="#fff8e8"/><circle cx="32" cy="15.5" r="1.2" fill="#fff8e8"/></svg>`,
+soda:`<svg viewBox="0 0 48 48"><path d="M14 14 h20 l-3.2 28 h-13.6Z" fill="#c8102e"/><path d="M14.8 21 h18.4" stroke="#fff" stroke-width="3.4"/><path d="M24 14 l6.5 -8.5" stroke="#8a7c63" stroke-width="3" stroke-linecap="round"/></svg>`,
+robot:`<svg viewBox="0 0 48 48"><rect x="12" y="14" width="24" height="18" rx="4.5" fill="#9aa4b2"/><circle cx="19.5" cy="22" r="3" fill="#0a84ff"/><circle cx="28.5" cy="22" r="3" fill="#0a84ff"/><rect x="18" y="27" width="12" height="3" rx="1.5" fill="#2b2b2e"/><path d="M24 14 v-5" stroke="#9aa4b2" stroke-width="3"/><circle cx="24" cy="7" r="2.6" fill="#c8102e"/><rect x="16" y="34" width="16" height="7" rx="3" fill="#7a8494"/></svg>`,
+cap:`<svg viewBox="0 0 48 48"><path d="M10 26 q0 -14.5 14 -14.5 t14 14.5Z" fill="#0a84ff"/><path d="M10 26 h28 q8.5 0 8.5 4 h-36.5Z" fill="#0868c8"/><circle cx="24" cy="11" r="2" fill="#0868c8"/></svg>`
+};
+function ic(name,px,mono){
+  return '<span class="ic'+(mono?' wico':'')+'" style="width:'+px+'px;height:'+px+'px">'+(ICONS[name]||'')+'</span>';
+}
+function iconInner(name){return (ICONS[name]||'').replace(/^<svg[^>]*>/,'').replace(/<\/svg>$/,'');}
+
+/* ================================================================
+   SOUND — إيقاع خليجي هادئ (عود + دُم تَك) وصوت ورق حقيقي
    ================================================================ */
 const Snd={
- ctx:null, master:null, ambGain:null, timer:null,
+ ctx:null, master:null, ambGain:null, timer:null, step:0, mIdx:2,
  muted:JSON.parse(localStorage.getItem('reem_muted')||'false'),
+ SCALE:[293.66,311.13,369.99,392,440,466.16,554.37,587.33], /* مقام حجاز على ري */
  ensure(){
    if(!this.ctx){
      const AC=window.AudioContext||window.webkitAudioContext; if(!AC)return null;
      this.ctx=new AC();
      this.master=this.ctx.createGain(); this.master.connect(this.ctx.destination);
-     this.ambGain=this.ctx.createGain(); this.ambGain.gain.value=.09; this.ambGain.connect(this.master);
+     this.ambGain=this.ctx.createGain(); this.ambGain.gain.value=.1; this.ambGain.connect(this.master);
      this.startAmb();
    }
    if(this.ctx.state==='suspended')this.ctx.resume();
    this.master.gain.value=this.muted?0:1;
    return this.ctx;
  },
- tone(f,dur,type,vol,dest,when){
+ startAmb(){
+   this.timer=setInterval(()=>{
+     if(this.muted||!this.ctx)return;
+     const s=this.step%8;
+     /* إيقاع خليجي مبسط: دُم . تَك . دُم دُم تَك . */
+     if(s===0||s===4||s===5)this.dum();
+     if(s===2||s===6)this.tak();
+     /* عود: مشية هادئة على مقام حجاز */
+     if(s%2===0&&Math.random()<.5){
+       this.mIdx+=[-1,0,1][Math.floor(Math.random()*3)];
+       this.mIdx=Math.max(0,Math.min(this.SCALE.length-1,this.mIdx));
+       this.oud(this.SCALE[this.mIdx]);
+     }
+     this.step++;
+   },340);
+ },
+ oud(f){const c=this.ctx,t=c.currentTime;
+   const g=c.createGain(); g.connect(this.ambGain);
+   g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(.4,t+.012);
+   g.gain.exponentialRampToValueAtTime(.0001,t+.62);
+   const fl=c.createBiquadFilter(); fl.type='lowpass'; fl.frequency.value=1350; fl.connect(g);
+   [0,4].forEach(d=>{const o=c.createOscillator(); o.type='sawtooth';
+     o.frequency.value=f*(1+d/1200); o.connect(fl); o.start(t); o.stop(t+.66);});
+ },
+ dum(){const c=this.ctx,t=c.currentTime;
+   const o=c.createOscillator(),g=c.createGain();
+   o.type='sine'; o.frequency.setValueAtTime(135,t); o.frequency.exponentialRampToValueAtTime(48,t+.12);
+   g.gain.setValueAtTime(.55,t); g.gain.exponentialRampToValueAtTime(.001,t+.17);
+   o.connect(g); g.connect(this.ambGain); o.start(t); o.stop(t+.19);
+ },
+ tak(){const c=this.ctx,t=c.currentTime;
+   const buf=c.createBuffer(1,c.sampleRate*.045,c.sampleRate),d=buf.getChannelData(0);
+   for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*(1-i/d.length);
+   const s=c.createBufferSource(); s.buffer=buf;
+   const fl=c.createBiquadFilter(); fl.type='bandpass'; fl.frequency.value=3200; fl.Q.value=1.4;
+   const g=c.createGain(); g.gain.value=.22;
+   s.connect(fl); fl.connect(g); g.connect(this.ambGain); s.start(t);
+ },
+ noiseBurst(dur,f0,f1,vol,when,type,Q){
+   const c=this.ctx,t=c.currentTime;
+   const buf=c.createBuffer(1,Math.max(1,c.sampleRate*dur),c.sampleRate),d=buf.getChannelData(0);
+   for(let i=0;i<d.length;i++){const e=1-i/d.length; d[i]=(Math.random()*2-1)*e*e;}
+   const s=c.createBufferSource(); s.buffer=buf;
+   const fl=c.createBiquadFilter(); fl.type=type||'bandpass'; fl.Q.value=Q||1;
+   fl.frequency.setValueAtTime(f0,t+when);
+   try{fl.frequency.exponentialRampToValueAtTime(Math.max(40,f1),t+when+dur);}catch(e){}
+   const g=c.createGain(); g.gain.value=vol;
+   s.connect(fl); fl.connect(g); g.connect(this.master); s.start(t+when);
+ },
+ flip(){ /* صوت تقليب ورقة حقيقي: قرقعة + انزلاق + استقرار */
+   const c=this.ensure(); if(!c||this.muted)return;
+   this.noiseBurst(.05,5200,3600,.5,0,'highpass',.7);
+   this.noiseBurst(.16,2400,650,.7,.02,'bandpass',.8);
+   this.noiseBurst(.07,1100,450,.35,.16,'bandpass',1);
+ },
+ tone(f,dur,type,vol,when){
    const c=this.ensure(); if(!c)return;
    dur=dur||.25; type=type||'triangle'; vol=vol||.18; when=when||0;
    const t=c.currentTime+when,o=c.createOscillator(),g=c.createGain();
-   o.type=type; o.frequency.value=f; o.connect(g); g.connect(dest||this.master);
+   o.type=type; o.frequency.value=f; o.connect(g); g.connect(this.master);
    g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(vol,t+.02);
    g.gain.exponentialRampToValueAtTime(.0001,t+dur); o.start(t); o.stop(t+dur+.05);
  },
- startAmb(){ /* نغمات صحراوية هادئة في الخلفية */
-   const notes=[293.66,349.23,392,440,523.25,587.33];
-   this.timer=setInterval(()=>{
-     if(this.muted||!this.ctx)return;
-     if(Math.random()<.3)return;
-     const n=notes[Math.floor(Math.random()*notes.length)];
-     this.tone(n,1.7,'triangle',.05,this.ambGain);
-     if(Math.random()<.3)this.tone(n/2,2.2,'sine',.035,this.ambGain);
-   },700);
- },
- flip(){ const c=this.ensure(); if(!c||this.muted)return;
-   const t=c.currentTime, buf=c.createBuffer(1,c.sampleRate*.13,c.sampleRate), d=buf.getChannelData(0);
-   for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*(1-i/d.length);
-   const src=c.createBufferSource(); src.buffer=buf;
-   const f=c.createBiquadFilter(); f.type='bandpass'; f.Q.value=1.2;
-   f.frequency.setValueAtTime(450,t); f.frequency.exponentialRampToValueAtTime(1700,t+.12);
-   const g=c.createGain(); g.gain.value=.55;
-   src.connect(f); f.connect(g); g.connect(this.master); src.start();
- },
- ding(){this.tone(660,.18,'sine',.2); this.tone(880,.26,'sine',.18,null,.09);},
- star(){this.tone(1046,.14,'sine',.2); this.tone(1568,.2,'sine',.15,null,.08);},
+ ding(){this.tone(660,.18,'sine',.2); this.tone(880,.26,'sine',.18,.09);},
+ star(){this.tone(1046,.14,'sine',.2); this.tone(1568,.2,'sine',.15,.08);},
  buzz(){this.tone(140,.32,'sawtooth',.16);},
- fanfare(){[523,659,784,1046].forEach((f,i)=>this.tone(f,.4,'triangle',.22,null,i*.13));},
+ fanfare(){[523,659,784,1046].forEach((f,i)=>this.tone(f,.4,'triangle',.22,i*.13));},
  pad(i){this.tone([330,392,494,587][i],.3,'square',.13);},
  toggle(){this.muted=!this.muted; localStorage.setItem('reem_muted',JSON.stringify(this.muted));
    this.ensure(); updateSndBtn();}
 };
-function updateSndBtn(){document.getElementById('sndBtn').textContent=Snd.muted?'🔇':'🔊';}
+function updateSndBtn(){document.getElementById('sndBtn').innerHTML=ic(Snd.muted?'soundOff':'soundOn',22);}
 document.getElementById('sndBtn').onclick=()=>Snd.toggle();
 document.addEventListener('pointerdown',()=>Snd.ensure(),{once:true});
 updateSndBtn();
 
 /* ================================================================
-   GAZELLE — غزال ريم (رسم أقرب للواقع: غزال الريم العربي)
+   GAZELLE — ريم (غزال الريم العربي)
    ================================================================ */
 const GAZELLE = `
 <svg viewBox="0 0 260 200" xmlns="http://www.w3.org/2000/svg">
@@ -78,82 +171,72 @@ const GAZELLE = `
     <stop offset="0" stop-color="#d8ae72"/><stop offset="1" stop-color="#c49658"/>
   </linearGradient>
  </defs>
+ <ellipse cx="130" cy="189" rx="82" ry="8" fill="#e3d2ac"/>
  <ellipse cx="130" cy="191" rx="70" ry="6" fill="rgba(120,90,30,.18)"/>
 
- <!-- far-side legs (darker, behind) -->
  <path d="M124 120 C123 136 124 150 122 162 C121 172 122 180 121 186" stroke="#a8804a" stroke-width="4.5" fill="none" stroke-linecap="round"/>
  <path d="M121 186 L121 191" stroke="#3a2c18" stroke-width="4.5" stroke-linecap="round"/>
  <path d="M170 118 C176 130 175 140 168 148 C166 158 168 172 169 186" stroke="#a8804a" stroke-width="5" fill="none" stroke-linecap="round"/>
  <path d="M169 186 L169 191" stroke="#3a2c18" stroke-width="5" stroke-linecap="round"/>
 
- <!-- tail -->
  <path d="M180 96 C188 100 190 108 186 116" stroke="#b98c4f" stroke-width="4" fill="none" stroke-linecap="round"/>
  <path d="M186 116 L184 124" stroke="#241c10" stroke-width="4" stroke-linecap="round"/>
 
- <!-- hind thigh + body (slender) -->
  <ellipse cx="160" cy="110" rx="17" ry="20" fill="url(#bodyG)"/>
  <path d="M98 102 C100 88 114 82 132 80 C152 78 168 84 174 94 C178 102 176 113 168 120 C152 131 116 132 104 123 C97 117 96 110 98 102 Z" fill="url(#bodyG)"/>
- <!-- flank stripe -->
  <path d="M104 117 C126 130 154 129 168 118 L167 125 C152 136 118 136 105 125 Z" fill="#9c7743" opacity=".85"/>
- <!-- white belly -->
  <path d="M106 126 C122 136 152 135 166 124 L163 132 C148 141 120 141 108 133 Z" fill="#f7f0e1"/>
 
- <!-- near-side legs (long & slender) -->
  <path d="M112 122 C110 136 112 150 109 162 C108 172 110 181 108 187" stroke="#c99e60" stroke-width="5" fill="none" stroke-linecap="round"/>
  <path d="M108 187 L108 192" stroke="#3a2c18" stroke-width="5" stroke-linecap="round"/>
  <path d="M158 120 C165 130 164 141 157 149 C155 159 158 172 158 187" stroke="#c99e60" stroke-width="5.5" fill="none" stroke-linecap="round"/>
  <path d="M158 187 L158 192" stroke="#3a2c18" stroke-width="5.5" stroke-linecap="round"/>
 
- <!-- neck (slender) -->
  <path d="M112 90 C102 80 90 62 84 44 L98 38 C104 56 112 72 124 84 Z" fill="url(#neckG)"/>
  <path d="M108 88 C99 79 89 63 84 48 L89 45 C95 60 103 74 114 84 Z" fill="#efe4cd" opacity=".75"/>
 
- <!-- horns (long, ringed, swept back) -->
  <path d="M84 32 C76 18 80 6 94 0" stroke="#5d4526" stroke-width="4" fill="none" stroke-linecap="round"/>
  <path d="M91 30 C85 18 89 8 102 2" stroke="#6e5330" stroke-width="3.8" fill="none" stroke-linecap="round"/>
  <path d="M81 28 l7 -2 M79 21 l7 -1 M80 14 l7 0 M84 8 l6 1" stroke="#3f2f18" stroke-width="1.5" opacity=".65"/>
 
- <!-- ear -->
  <path d="M96 34 C106 26 114 25 118 28 C114 36 106 41 98 42 Z" fill="#c49658"/>
  <path d="M99 34 C105 30 110 29 113 30 C110 35 104 38 99 39 Z" fill="#eeddc2"/>
 
- <!-- head -->
  <path d="M96 36 C90 28 80 25 71 28 C61 31 54 39 52 47 C51 53 55 57 61 58 C71 59 81 54 87 48 C91 44 95 40 96 36 Z" fill="url(#neckG)"/>
- <!-- muzzle -->
  <path d="M56 50 C51 52 47 55 46 59 C49 62 54 62 58 60 Z" fill="#b98c4f"/>
  <circle cx="47" cy="58" r="2.8" fill="#241c10"/>
  <path d="M49 62 C52 63.5 55 63.5 57 62" stroke="#241c10" stroke-width="1.5" fill="none" stroke-linecap="round"/>
- <!-- eye + tear mark + blaze -->
- <circle cx="70" cy="42" r="4.6" fill="#241c10"/>
- <circle cx="71.5" cy="40.5" r="1.5" fill="#fff"/>
+ <circle cx="70" cy="42" r="5.2" fill="#241c10"/>
+ <circle cx="71.8" cy="40.2" r="1.7" fill="#fff"/>
+ <path d="M74 38 q3 -1.5 5 -0.5" stroke="#241c10" stroke-width="1.6" fill="none" stroke-linecap="round"/>
  <path d="M67 47 C63 52 58 55 53 56" stroke="#4a3a24" stroke-width="2.2" fill="none" stroke-linecap="round" opacity=".8"/>
  <path d="M76 35 C72 32 66 32 62 35" stroke="#f2e7d0" stroke-width="2.6" fill="none" stroke-linecap="round" opacity=".9"/>
 </svg>`;
 document.getElementById('mascotHost').innerHTML = GAZELLE;
 
 /* ================================================================
-   CHAPTER DATA — قصة مترابطة: سيف وريم والجد سالم يتبعون الخريطة
+   CHAPTER DATA
    ================================================================ */
 const AR_N=['٠','١','٢','٣','٤','٥'];
 const CH = [
  {
-  key:'deen', name:'الدِّين', tag:'المحطة الأولى: القرية القديمة', emoji:'🕌',
-  gemColor:'#0b7a4b', gemName:'جوهرة الإيمان', game:'puzzle',
+  key:'deen', name:'الدِّين', tag:'المحطة الأولى: القرية القديمة', icon:'mosque',
+  gemColor:'#0b7a4b', gemName:'جوهرة الإيمان', game:'connect',
   pages:[
    { scene:'dawn', lead:'قبل الفجر',
      text:'انطلق سيف وريم مع الجدّ سالم قبل الفجر، فالخريطة تشير إلى القرية القديمة التي وُلد فيها الجد. وصلوا والنجوم ما تزال في السماء… وفجأة علا صوتٌ هادئ فوق البيوت كلها: «اللهُ أكبر». خرج الناس من بيوت الطين نحو المسجد الصغير، وحمل سيف قِربة الماء يساعد المتوضّئين، تمامًا كما كان يفعل الجد وهو في عمره.',
      whisper:'لاحظت ريم أن الجميع توقفوا عن كل شيء في اللحظة نفسها… كأن قلوبهم اتجهت معًا إلى شيءٍ أكبر منهم جميعًا.' },
    { scene:'dates', lead:'ضيفُ الله',
      text:'بعد الصلاة جلس عند الباب مسافرٌ غريب يبدو عليه التعب. أسرع إليه رجلٌ عجوز يحمل التمر والقهوة وقال: «حيّاك الله يا ضيف الله». همس سيف لجدّه: «لكنه لا يعرفه!» فابتسم الجد: «هكذا علّمنا ديننا يا وليدي: رحمةٌ وكرمٌ وصدق… قبل أن يكون كلامًا». وعند محراب المسجد، لمعت على الخريطة أول إشارة!',
-     whisper:'قال الجد: «الجوهرة الأولى تنتظر من يُعيد للمسجد صورته الجميلة…»' }
+     whisper:'قال الجد: «الجوهرة الأولى تنتظر من يصل النور بالنور… حتى تضيء القرية كلها».' }
   ],
   discover:{
    chips:[
-    {e:'🕌',t:'الأذان يرفع خمس مرات كل يوم يجمع الناس على الصلاة'},
-    {e:'🤲',t:'إكرام الضيف والمسافر ولو كان غريبًا'},
-    {e:'💝',t:'الصدقة ومساعدة المحتاج بلا انتظار شكر'},
-    {e:'🤝',t:'الصدق في البيع والأمانة في العمل'},
-    {e:'🌧️',t:'شكر الله على المطر والرزق والخير'}
+    {i:'mosque',t:'الأذان يرفع خمس مرات كل يوم يجمع الناس على الصلاة'},
+    {i:'hands',t:'الدعاء والشكر لله على المطر والرزق والخير'},
+    {i:'gift',t:'الصدقة ومساعدة المحتاج بلا انتظار شكر'},
+    {i:'handshake',t:'الصدق في البيع والأمانة في العمل'},
+    {i:'dallah',t:'إكرام الضيف والمسافر ولو كان غريبًا'}
    ],
    traits:[
     {t:'يزرع الرحمة',d:'يجعل القلب رحيمًا بالناس والحيوان، متسامحًا مع الجميع.'},
@@ -164,11 +247,11 @@ const CH = [
    past:'كان المسجد قلب القرية: فيه يصلّون ويتعلمون القراءة ويحلّون خلافاتهم ويجتمعون في الأفراح والأحزان.',
    now:'ما تزال الإمارات تبني المساجد الجميلة، وتجعل التسامح والرحمة أساس العيش بين أكثر من ٢٠٠ جنسية تعيش على أرضها.'
   },
-  gameTitle:'أكمِل المسجد', gameDesc:'انزلق بالقطع نحو الفراغ حتى تكتمل صورة المسجد. استعن بالصورة الصغيرة!',
-  winMsg:'اكتمل المسجد كما تجتمع القلوب في الصلاة.'
+  gameTitle:'وصّل الأنوار', gameDesc:'المس رمزًا ثم توأمه ليتصلا بخيط النور. ثلاث مراحل تزداد صعوبة!',
+  winMsg:'وصلت الأنوار كلها فأضاءت القرية! هكذا يجمع الخيرُ القلوب.'
  },
  {
-  key:'wala', name:'الولاء', tag:'المحطة الثانية: ساحة العلم', emoji:'🇦🇪',
+  key:'wala', name:'الولاء', tag:'المحطة الثانية: ساحة العلم', icon:'flag',
   gemColor:'#c8102e', gemName:'جوهرة الوفاء', game:'simon',
   pages:[
    { scene:'flag', lead:'صباحُ العلم',
@@ -180,11 +263,11 @@ const CH = [
   ],
   discover:{
    chips:[
-    {e:'🇦🇪',t:'الوقوف باحترام للعلم والنشيد الوطني'},
-    {e:'🎉',t:'الاحتفال بيوم الاتحاد ٢ ديسمبر ويوم العلم'},
-    {e:'📚',t:'الاجتهاد في الدراسة والعمل لرفعة الوطن'},
-    {e:'💪',t:'الوقوف صفًا واحدًا خلف القيادة وقت الشدة'},
-    {e:'🏞️',t:'المحافظة على ممتلكات الوطن ونظافته'}
+    {i:'flag',t:'الوقوف باحترام للعلم والنشيد الوطني'},
+    {i:'burst',t:'الاحتفال بيوم الاتحاد ٢ ديسمبر ويوم العلم'},
+    {i:'bookOpen',t:'الاجتهاد في الدراسة والعمل لرفعة الوطن'},
+    {i:'shield',t:'الوقوف صفًا واحدًا خلف القيادة وقت الشدة'},
+    {i:'tree',t:'المحافظة على ممتلكات الوطن ونظافته'}
    ],
    traits:[
     {t:'حبٌّ صادق',d:'محبة الوطن وقيادته الرشيدة تنبع من القلب لا بالأوامر.'},
@@ -199,7 +282,7 @@ const CH = [
   winMsg:'حفظت نبض الاتحاد كاملًا دون خطأ!'
  },
  {
-  key:'muwatana', name:'المواطَنة', tag:'المحطة الثالثة: حيّنا الجميل', emoji:'🤝',
+  key:'muwatana', name:'المواطَنة', tag:'المحطة الثالثة: حيّنا الجميل', icon:'handshake',
   gemColor:'#0a84ff', gemName:'جوهرة المسؤولية', game:'maze',
   pages:[
    { scene:'rules', lead:'في طريق العودة',
@@ -207,15 +290,15 @@ const CH = [
      whisper:'فهمت ريم أن البلد ليس أرضًا فقط… بل ناسٌ يحفظون مكانهم كأنه بيتهم.' },
    { scene:'clean', lead:'الحيّ بيتُنا الكبير',
      text:'وجدوا جيران الحي متجمعين يتطوعون لتنظيف الحديقة وزراعة شتلات الغاف. انضم سيف إليهم فورًا، وحملت ريم على ظهرها سلال الشتلات فصفّق لها الصغار! قال الجد: «المواطن الصالح يأخذ حقّه بأدب ويؤدي واجبه بحب». وإذا بالإشارة الثالثة تلمع فوق الحديقة!',
-     whisper:'«جوهرة المسؤولية لمن يجمع النجوم كلها ثم يعود إلى البيت سالمًا» — قالت الخريطة.' }
+     whisper:'«جوهرة المسؤولية لمن يجمع النجوم كلها ويعود إلى البيت قبل غروب الشمس» — قالت الخريطة.' }
   ],
   discover:{
    chips:[
-    {e:'🚦',t:'احترام قوانين المرور وعبور الشارع من المكان الصحيح'},
-    {e:'🌳',t:'المحافظة على الحدائق والمرافق العامة'},
-    {e:'🙋',t:'التطوع لمساعدة الجيران وخدمة الحي'},
-    {e:'🌍',t:'احترام حقوق الآخرين مهما اختلفوا عنا'},
-    {e:'🗳️',t:'المشاركة في خدمة المجتمع والمناسبات الوطنية'}
+    {i:'trafficLight',t:'احترام قوانين المرور وعبور الشارع من المكان الصحيح'},
+    {i:'tree',t:'المحافظة على الحدائق والمرافق العامة'},
+    {i:'volunteer',t:'التطوع لمساعدة الجيران وخدمة الحي'},
+    {i:'globe',t:'احترام حقوق الآخرين مهما اختلفوا عنا'},
+    {i:'home',t:'حماية الوطن والحفاظ عليه كأنه بيتنا'}
    ],
    traits:[
     {t:'حقوق وواجبات',d:'لكل مواطن حق يأخذه (التعليم والصحة والأمان) وواجب يؤديه.'},
@@ -226,11 +309,11 @@ const CH = [
    past:'قديمًا تعاون أهل الفريج في بناء البيوت وحفر الآبار وحراسة بعضهم؛ كان الجميع مسؤولًا عن الجميع.',
    now:'المواطنة اليوم في احترام القانون والتطوع والاجتهاد، وفي الحفاظ على ما بناه الآباء ليبقى الوطن الأول عالميًا.'
   },
-  gameTitle:'طريقُ العودة', gameDesc:'متاهة أكبر هذه المرة! اجمع النجوم السبع كلها ثم عُد إلى البيت الأخضر.',
-  winMsg:'جمعت النجوم وعدت سالمًا؛ أدّيت الواجب كاملًا!'
+  gameTitle:'طريقُ العودة', gameDesc:'اجمع النجوم السبع وعُد إلى البيت قبل انتهاء الوقت! الشمس تغرب بسرعة…',
+  winMsg:'جمعت النجوم وعدت قبل الغروب؛ أدّيت الواجب كاملًا!'
  },
  {
-  key:'thaqafa', name:'الثقافة', tag:'المحطة الرابعة: مجلس الجد', emoji:'☕',
+  key:'thaqafa', name:'الثقافة', tag:'المحطة الرابعة: مجلس الجد', icon:'dallah',
   gemColor:'#c9a227', gemName:'جوهرة الكرم', game:'catch',
   pages:[
    { scene:'majlis', lead:'ليلةُ المجلس',
@@ -242,11 +325,11 @@ const CH = [
   ],
   discover:{
    chips:[
-    {e:'🗣️',t:'اللغة العربية: لغة القرآن وهويتنا الأولى'},
-    {e:'☕',t:'القهوة العربية والتمر: رمز الضيافة والكرم'},
-    {e:'📜',t:'الشعر النبطي وفن العيّالة في الأعياد'},
-    {e:'👳',t:'الكندورة والعباءة: لباسنا الذي نفخر به'},
-    {e:'🌺',t:'الحناء والتلّي: نقوش الأمهات والجدات'}
+    {i:'speech',t:'اللغة العربية: لغة القرآن وهويتنا الأولى'},
+    {i:'dallah',t:'القهوة العربية والتمر: رمز الضيافة والكرم'},
+    {i:'scroll',t:'الشعر النبطي وفن العيّالة في الأعياد'},
+    {i:'kandura',t:'الكندورة والعباءة: لباسنا الذي نفخر به'},
+    {i:'henna',t:'الحناء والتلّي: نقوش الأمهات والجدات'}
    ],
    traits:[
     {t:'اللغة أولًا',d:'العربية أساس هويتنا وبها نفكر ونحلم ونتكلم.'},
@@ -261,7 +344,7 @@ const CH = [
   winMsg:'ملأت السلة بالكنوز الأصيلة وميّزتها عن الدخيل!'
  },
  {
-  key:'turath', name:'التُّراث', tag:'المحطة الأخيرة: الميناء القديم', emoji:'🐪',
+  key:'turath', name:'التُّراث', tag:'المحطة الأخيرة: الميناء القديم', icon:'camel',
   gemColor:'#dcd6c6', gemName:'لؤلؤة الأجداد', game:'memory',
   pages:[
    { scene:'sea', lead:'حيث بدأت الحكاية',
@@ -273,11 +356,11 @@ const CH = [
   ],
   discover:{
    chips:[
-    {e:'⛵',t:'الغوص على اللؤلؤ وسفن المحامل الشراعية'},
-    {e:'🦅',t:'الصقّارة: صيد الصقور رياضة الآباء'},
-    {e:'🐪',t:'سباقات الهجن في الأعياد والمهرجانات'},
-    {e:'🌴',t:'النخلة أم الخير: تمرٌ وظل وسعف للبيوت'},
-    {e:'🏰',t:'الحصون والبراجيل: عمارة صنعت للصحراء'}
+    {i:'dhow',t:'الغوص على اللؤلؤ وسفن المحامل الشراعية'},
+    {i:'falcon',t:'الصقّارة: صيد الصقور رياضة الآباء'},
+    {i:'camel',t:'سباقات الهجن في الأعياد والمهرجانات'},
+    {i:'palm',t:'النخلة أم الخير: تمرٌ وظل وسعف للبيوت'},
+    {i:'fort',t:'الحصون والبراجيل: عمارة صنعت للصحراء'}
    ],
    traits:[
     {t:'جسرٌ للماضي',d:'يربطنا بالأجداد فنعرف من نحن ومن أين جئنا.'},
@@ -322,8 +405,8 @@ function renderHome(){
     const got=gems.includes(i);
     const el=document.createElement('div');
     el.className='ch-card';
-    el.innerHTML='<div class="ch-gem'+(got?' earned':'')+'" style="--g:'+c.gemColor+'">'+(got?'✓':'◇')+'</div>'
-      +'<div class="ch-emoji">'+c.emoji+'</div>'
+    el.innerHTML='<div class="ch-gem'+(got?' earned':'')+'" style="--g:'+c.gemColor+'">'+(got?'✓':'')+'</div>'
+      +'<div class="ch-emoji">'+ic(c.icon,36)+'</div>'
       +'<div class="ch-name">'+c.name+'</div>'
       +'<div class="ch-tag">'+c.tag+'</div>';
     el.onclick=()=>{Snd.flip(); openChapter(i);};
@@ -342,17 +425,14 @@ let cur=0, curPage=0;
 const PAGES_PER=3;
 
 /* ================================================================
-   BOOK — with page-flip
+   BOOK
    ================================================================ */
 function openChapter(i){cur=i; curPage=0; renderBook(0); show('book');}
-function turnPage(dir){ // dir: +1 forward, -1 back
+function turnPage(dir){
   const paper=document.getElementById('paper');
   Snd.flip();
   paper.classList.add(dir>0?'flip-out':'flip-out-b');
-  setTimeout(()=>{
-    curPage+=dir;
-    renderBook(dir);
-  },270);
+  setTimeout(()=>{curPage+=dir; renderBook(dir);},270);
 }
 function renderBook(dir){
   const c=CH[cur];
@@ -368,7 +448,7 @@ function renderBook(dir){
       +'<div class="scene" style="background:'+sceneBG(pg.scene)+'">'+(SCENES[pg.scene]||'')+'</div>'
       +'<div class="story-card"><span class="lead">'+pg.lead+'</span>'+pg.text
       +'<div class="whisper">'+pg.whisper+'</div></div>'
-      +'<div class="hint-swipe">اسحب الصفحة أو استخدم الأزرار ↔</div>'
+      +'<div class="hint-swipe">اسحب الصفحة لتقليبها أو استخدم الأزرار</div>'
       +'</div><div class="pageno">'+pageNo+'</div>';
   } else {
     const d=c.discover;
@@ -376,18 +456,18 @@ function renderBook(dir){
     html='<div class="page">'
       +'<div class="gem-banner" style="--g:'+c.gemColor+'"><div class="g"></div>'
       +'<div><h5>'+c.gemName+'</h5><p>أنهِ لعبة «'+c.gameTitle+'» لتضمّها إلى العقد!</p></div></div>'
-      +'<div class="sec-title">👆 المس البطاقات لتكتشف '+c.name+' حولك</div>'
+      +'<div class="sec-title">المس البطاقات لتكتشف '+c.name+' حولك</div>'
       +'<div class="chips">'+d.chips.map(ch=>
         '<div class="chip" onclick="toggleChip(this)"><div class="in">'
-        +'<div class="f">'+ch.e+'<small>اضغط لتقلب</small></div>'
+        +'<div class="f">'+ic(ch.i,32,true)+'<small>اضغط لتقلب</small></div>'
         +'<div class="b">'+ch.t+'</div></div></div>').join('')+'</div>'
-      +'<div class="sec-title">✨ أسرار '+c.name+'</div>'
+      +'<div class="sec-title">'+ic('star',17)+' أسرار '+c.name+'</div>'
       +'<div class="acc">'+d.traits.map(t=>
         '<div class="acc-row"><div class="acc-h" onclick="toggleAcc(this)">'+t.t
         +'<span class="pm">+</span></div><div class="acc-b">'+t.d+'</div></div>').join('')+'</div>'
       +'<div class="tn-switch"><div class="tn-tabs">'
-      +'<button class="on" onclick="tnShow(0,this)">⏳ زمن الأجداد</button>'
-      +'<button onclick="tnShow(1,this)">🌇 زماننا اليوم</button></div>'
+      +'<button class="on" onclick="tnShow(0,this)">زمن الأجداد</button>'
+      +'<button onclick="tnShow(1,this)">زماننا اليوم</button></div>'
       +'<div class="tn-body" id="tnBody">'+d.past+'</div></div>'
       +'</div><div class="pageno">'+pageNo+'</div>';
   }
@@ -396,14 +476,13 @@ function renderBook(dir){
   paper.className='paper '+(dir>0?'flip-in':dir<0?'flip-in-b':'');
   setTimeout(()=>{paper.className='paper';},340);
 
-  // pager buttons
   const pager=document.getElementById('pager'); pager.innerHTML='';
   const back=document.createElement('button'); back.className='btn ghost'; back.style.flex='0 0 36%';
   back.textContent = curPage===0?'الفصول':'‹ السابق';
   back.onclick=()=> curPage===0?goHome():turnPage(-1);
   const next=document.createElement('button'); next.className='btn'; next.style.flex='1';
   if(curPage<2){ next.textContent = curPage===1?'اكتشف ›':'التالي ›'; next.onclick=()=>turnPage(1); }
-  else { next.className='btn gold'; next.style.flex='1'; next.textContent='🎮 العب: '+c.gameTitle;
+  else { next.className='btn gold'; next.innerHTML=ic('controller',20,true)+' العب: '+c.gameTitle;
     next.onclick=startGame; }
   pager.append(back,next);
 }
@@ -416,7 +495,6 @@ window.tnShow=(i,btn)=>{
   b.style.animation='none'; void b.offsetWidth; b.style.animation='';
   b.textContent = i===0?window._tn.past:window._tn.now;
 };
-/* swipe pages */
 (function(){
   const paper=document.getElementById('paper');
   let sx=0,sy=0;
@@ -424,7 +502,7 @@ window.tnShow=(i,btn)=>{
   paper.addEventListener('touchend',e=>{
     const dx=e.changedTouches[0].clientX-sx, dy=e.changedTouches[0].clientY-sy;
     if(Math.abs(dy)>50||Math.abs(dx)<60)return;
-    if(dx>0 && curPage<2) turnPage(1);      /* سحب لليمين = التالي (كتاب عربي) */
+    if(dx>0 && curPage<2) turnPage(1);
     else if(dx<0 && curPage>0) turnPage(-1);
   },{passive:true});
 })();
@@ -461,7 +539,7 @@ const SCENES={
 function showSheet(o){
   const em=document.getElementById('ovEmoji'), gm=document.getElementById('ovGem');
   if(o.gem){em.style.display='none'; gm.style.display='block'; gm.style.setProperty('--g',o.gem);}
-  else {em.style.display='block'; gm.style.display='none'; em.textContent=o.emoji||'🎉';}
+  else {em.style.display='block'; gm.style.display='none'; em.innerHTML=ic(o.icon||'burst',62);}
   document.getElementById('ovTitle').textContent=o.title;
   document.getElementById('ovText').textContent=o.text;
   const btn=document.getElementById('ovBtn'); btn.textContent=o.btn||'متابعة';
@@ -477,10 +555,10 @@ function winChapter(){
   const all=gems.length>=CH.length;
   Snd.fanfare(); fireConfetti();
   showSheet({
-    gem:first?c.gemColor:null, emoji:'🎉',
+    gem:first?c.gemColor:null, icon:'burst',
     title:first?c.gemName+'!':'أحسنت من جديد!',
     text:c.winMsg+(first?' انضمت '+c.gemName+' إلى العقد.':''),
-    btn: all&&first?'شاهد العقد الكامل ✨':(cur<CH.length-1?'المحطة التالية ›':'العودة للخريطة'),
+    btn: all&&first?'شاهد العقد الكامل':(cur<CH.length-1?'المحطة التالية ›':'العودة للخريطة'),
     cb(){ stopAllGames();
       if(all&&first){grandFinale();}
       else if(cur<CH.length-1){openChapter(cur+1);}
@@ -490,7 +568,7 @@ function winChapter(){
 }
 function grandFinale(){
   fireConfetti(); Snd.fanfare(); setTimeout(()=>{Snd.fanfare(); fireConfetti();},700);
-  showSheet({emoji:'🏆', title:'اكتمل عقدُ الهوية!',
+  showSheet({icon:'trophy', title:'اكتمل عقدُ الهوية!',
     text:'خمس جواهر تلمع في العقد: الإيمان، والوفاء، والمسؤولية، والكرم، ولؤلؤة الأجداد. علّقه الجد سالم في صدر المجلس وقال: «العقد الحقيقي صار في قلبيكما… هذا هو معنى أن تكون إماراتيًا».',
     btn:'العودة إلى البداية', cb:goHome});
 }
@@ -505,94 +583,87 @@ function startGame(){
   document.getElementById('gp').textContent=c.gameDesc;
   document.getElementById('gameFoot').innerHTML='';
   show('game');
-  ({puzzle:initPuzzle, maze:initMaze, catch:initCatch, simon:initSimon, memory:initMemory})[c.game]();
+  ({connect:initConnect, maze:initMaze, catch:initCatch, simon:initSimon, memory:initMemory})[c.game]();
 }
 function backToBook(){stopAllGames(); curPage=2; renderBook(0); show('book');}
 let stopAllGames=()=>{};
 function wrapStage(node){const s=document.createElement('div'); s.className='game-stage'; s.appendChild(node); return s;}
 function wait(ms){return new Promise(r=>setTimeout(r,ms));}
 
-/* ---------- GAME 1: MOSQUE SLIDING PUZZLE (أسهل) ---------- */
-function mosqueSVG(){return `data:image/svg+xml;utf8,`+encodeURIComponent(`
-<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'>
-<rect width='300' height='300' fill='#ffe6a8'/>
-<circle cx='150' cy='120' r='60' fill='#ffd166'/>
-<rect x='40' y='170' width='220' height='110' fill='#e9d3a0'/>
-<path d='M40 170 q110 -70 220 0Z' fill='#0b7a4b'/>
-<rect x='142' y='60' width='16' height='40' fill='#0b7a4b'/>
-<circle cx='150' cy='52' r='12' fill='#c9a227'/>
-<rect x='60' y='150' width='24' height='130' fill='#c7ad78'/>
-<rect x='216' y='150' width='24' height='130' fill='#c7ad78'/>
-<path d='M60 150 q12 -26 24 0Z' fill='#0b7a4b'/>
-<path d='M216 150 q12 -26 24 0Z' fill='#0b7a4b'/>
-<rect x='128' y='210' width='44' height='70' rx='22' fill='#7a5a2e'/>
-<rect x='80' y='200' width='30' height='40' rx='15' fill='#b98a4e'/>
-<rect x='190' y='200' width='30' height='40' rx='15' fill='#b98a4e'/>
-<circle cx='72' cy='140' r='8' fill='#c9a227'/><circle cx='228' cy='140' r='8' fill='#c9a227'/>
-</svg>`);}
-let pz={order:[],empty:8,moves:0};
-function shuffleByMoves(n){
-  pz.order=[...Array(9).keys()]; pz.empty=8;
-  let last=-1;
-  for(let k=0;k<n;k++){
-    const e=pz.empty, er=Math.floor(e/3), ec=e%3, opts=[];
-    [[er-1,ec],[er+1,ec],[er,ec-1],[er,ec+1]].forEach(rc=>{
-      if(rc[0]>=0&&rc[0]<3&&rc[1]>=0&&rc[1]<3){const i=rc[0]*3+rc[1]; if(i!==last)opts.push(i);}});
-    const i=opts[Math.floor(Math.random()*opts.length)];
-    pz.order[e]=pz.order[i]; pz.order[i]=8; last=e; pz.empty=i;
-  }
-  if(isSolved())shuffleByMoves(n);
-}
-function isSolved(){return pz.order.every((v,i)=>v===i);}
-function initPuzzle(){
-  const src=mosqueSVG();
-  const wrap=document.createElement('div'); wrap.id='puzzleWrap';
-  const grid=document.createElement('div'); grid.id='puzzleGrid';
-  const side=document.createElement('div'); side.className='pz-side';
-  side.innerHTML='<div class="pz-thumb" style="background-image:url(\''+src+'\')"></div><small>الصورة الكاملة</small>';
-  wrap.append(grid,side);
-  document.getElementById('gameBody').innerHTML='';
-  document.getElementById('gameBody').appendChild(wrapStage(wrap));
-  shuffleByMoves(12);            /* خلط خفيف = أسهل بكثير */
-  pz.moves=0;
-  drawPuzzle(src,grid);
-  document.getElementById('gameFoot').innerHTML=
-    '<span class="pill" id="pzMoves">النقلات: 0</span><button class="btn ghost" id="pzShuf">خلط 🔀</button>';
-  document.getElementById('pzShuf').onclick=()=>{shuffleByMoves(12); pz.moves=0;
-    document.getElementById('pzMoves').textContent='النقلات: 0'; drawPuzzle(src,grid);};
-  stopAllGames=()=>{};
-}
-function drawPuzzle(src,grid){
-  grid.innerHTML='';
-  pz.order.forEach((val,idx)=>{
-    const t=document.createElement('div');
-    if(val===8){t.className='ptile empty';}
-    else{
-      t.className='ptile';
-      const r=Math.floor(val/3), col=val%3;
-      t.style.backgroundImage='url("'+src+'")';
-      t.style.backgroundPosition=(col*50)+'% '+(r*50)+'%';
-    }
-    t.onclick=()=>tryMove(idx,src,grid);
-    grid.appendChild(t);
+/* ---------- GAME 1: وصّل الأنوار (توصيل الأزواج، ٣ مراحل) ---------- */
+const CONNECT_ICONS=['mosque','crescent','dallah','star','palm','bookOpen','beads','fort','dhow'];
+let cn={};
+function initConnect(){cn={level:0}; buildConnect(); stopAllGames=()=>{};}
+function buildConnect(){
+  const pairs=[3,6,9][cn.level];
+  const r=[26,21,17][cn.level];
+  const icons=CONNECT_ICONS.slice(0,pairs);
+  let items=icons.concat(icons).sort(()=>Math.random()-.5);
+  const n=items.length;
+  const cols=[3,4,5][cn.level], rows=Math.ceil(n/cols);
+  const W=320, cellW=W/cols, cellH=Math.max(cellW*.92, r*2.4), H=rows*cellH;
+  let slots=[...Array(cols*rows).keys()].sort(()=>Math.random()-.5).slice(0,n);
+  cn.dots=items.map((icon,k)=>{
+    const s=slots[k];
+    const cx=(s%cols+0.5)*cellW+(Math.random()*2-1)*cellW*.08;
+    const cy=(Math.floor(s/cols)+0.5)*cellH+(Math.random()*2-1)*cellH*.08;
+    return {icon,cx,cy,done:false};
   });
+  cn.sel=-1; cn.left=pairs; cn.r=r;
+  const wrap=document.getElementById('gameBody'); wrap.innerHTML='';
+  const host=document.createElement('div'); host.className='cn-host';
+  let svg='<svg viewBox="0 0 '+W+' '+H+'"><g id="cnLines"></g>';
+  cn.dots.forEach((d,i)=>{
+    const s=r*1.24, o=-s/2;
+    svg+='<g class="cn-dot" data-i="'+i+'" transform="translate('+d.cx.toFixed(1)+','+d.cy.toFixed(1)+')" style="cursor:pointer">'
+      +'<circle r="'+r+'" fill="#fffdf7" stroke="#d8c9a4" stroke-width="3"/>'
+      +'<g transform="translate('+o+','+o+') scale('+(s/48).toFixed(3)+')">'+iconInner(d.icon)+'</g>'
+      +'<circle r="'+(r+7)+'" fill="transparent"/>'
+      +'</g>';
+  });
+  svg+='</svg>';
+  host.innerHTML=svg;
+  wrap.appendChild(wrapStage(host));
+  host.querySelectorAll('.cn-dot').forEach(el=>el.addEventListener('click',()=>cnTap(+el.dataset.i)));
+  document.getElementById('gameFoot').innerHTML=
+    '<span class="pill">المرحلة: '+AR_N[cn.level+1]+' / ٣</span>'
+    +'<span class="pill goldy" id="cnLeft">الأزواج المتبقية: '+cn.left+'</span>';
 }
-function tryMove(idx,src,grid){
-  const e=pz.empty, er=Math.floor(e/3),ec=e%3, ir=Math.floor(idx/3),ic=idx%3;
-  if((Math.abs(er-ir)===1&&ec===ic)||(Math.abs(ec-ic)===1&&er===ir)){
-    const a=pz.order[e]; pz.order[e]=pz.order[idx]; pz.order[idx]=a; pz.empty=idx;
-    pz.moves++; document.getElementById('pzMoves').textContent='النقلات: '+pz.moves;
-    Snd.ding();
-    drawPuzzle(src,grid);
-    if(isSolved()){
-      grid.querySelectorAll('.ptile.empty').forEach(x=>{x.classList.remove('empty');
-        x.style.backgroundImage='url("'+src+'")'; x.style.backgroundPosition='100% 100%';});
-      setTimeout(winChapter,450);
+function cnDotEl(i){return document.querySelector('.cn-dot[data-i="'+i+'"]');}
+function cnSetSel(i,on){
+  const el=cnDotEl(i); if(!el)return;
+  el.querySelector('circle').setAttribute('stroke',on?'#c9a227':'#d8c9a4');
+  el.querySelector('circle').setAttribute('stroke-width',on?'5':'3');
+}
+function cnTap(i){
+  const d=cn.dots[i]; if(d.done)return;
+  if(cn.sel===i){cnSetSel(i,false); cn.sel=-1; return;}
+  if(cn.sel<0){cn.sel=i; cnSetSel(i,true); Snd.ding(); return;}
+  const p=cn.dots[cn.sel], pi=cn.sel;
+  if(p.icon===d.icon){
+    p.done=d.done=true;
+    document.getElementById('cnLines').innerHTML+=
+      '<line x1="'+p.cx+'" y1="'+p.cy+'" x2="'+d.cx+'" y2="'+d.cy
+      +'" stroke="#c9a227" stroke-width="5" stroke-linecap="round" opacity=".8"/>';
+    cnSetSel(pi,false);
+    [i,pi].forEach(k=>{const el=cnDotEl(k);
+      el.querySelector('circle').setAttribute('stroke','#0b7a4b'); el.style.opacity=.9;});
+    cn.sel=-1; cn.left--; Snd.star();
+    document.getElementById('cnLeft').textContent='الأزواج المتبقية: '+cn.left;
+    if(cn.left===0){
+      if(cn.level<2){cn.level++; toast('أحسنت! المرحلة التالية أصعب','star'); setTimeout(buildConnect,850);}
+      else setTimeout(winChapter,400);
     }
+  } else {
+    Snd.buzz();
+    [i,pi].forEach(k=>{const el=cnDotEl(k), c=el.querySelector('circle');
+      c.setAttribute('stroke','#c8102e');
+      setTimeout(()=>{if(!cn.dots[k].done){c.setAttribute('stroke','#d8c9a4'); c.setAttribute('stroke-width','3');}},450);});
+    cn.sel=-1;
   }
 }
 
-/* ---------- GAME 2: MAZE (أصعب: أكبر + ٧ نجوم) ---------- */
+/* ---------- GAME 2: المتاهة (مع مؤقت) ---------- */
 const MAZE_MAP=[
  "1111111111111",
  "1S001000100I1",
@@ -609,17 +680,17 @@ const MAZE_MAP=[
 let mz={};
 function initMaze(){
   const rows=MAZE_MAP.length, cols=MAZE_MAP[0].length;
-  mz={rows,cols,stars:0,total:0,px:0,py:0,cells:[]};
+  mz={rows,cols,stars:0,total:0,px:0,py:0,cells:[],time:50,timer:null,over:false};
   const wrap=document.getElementById('gameBody'); wrap.innerHTML='';
   const grid=document.createElement('div'); grid.id='maze';
   const size=Math.min(23, Math.floor(290/cols));
+  mz.size=size;
   grid.style.gridTemplateColumns='repeat('+cols+','+size+'px)';
   grid.style.gridTemplateRows='repeat('+rows+','+size+'px)';
   mz.map=MAZE_MAP.map(r=>r.split(''));
   for(let y=0;y<rows;y++)for(let x=0;x<cols;x++){
     const ch=mz.map[y][x]; const c=document.createElement('div');
     c.className='mcell '+(ch==='1'?'wall':(ch==='H'?'home':'path'));
-    c.style.fontSize=(size*0.68)+'px';
     if(ch==='S'){mz.px=x;mz.py=y;}
     if(ch==='H'){mz.hx=x;mz.hy=y;}
     if(ch==='I'){mz.total++; c.dataset.star='1';}
@@ -632,11 +703,12 @@ function initMaze(){
     +'<div class="sp"></div><button data-d="D">▼</button><div class="sp"></div>';
   pad.querySelectorAll('button').forEach(b=>b.onclick=()=>move(b.dataset.d));
   wrap.appendChild(pad);
-  document.getElementById('gameFoot').innerHTML='<span class="pill" id="mzStars">النجوم: 0 / '+mz.total+'</span>'
-    +'<span class="pill goldy">اجمعها كلها ثم عُد للبيت 🏠</span>';
+  document.getElementById('gameFoot').innerHTML=
+    '<span class="pill" id="mzTime">'+ic('clock',16)+' 50</span>'
+    +'<span class="pill" id="mzStars">النجوم: 0 / '+mz.total+'</span>'
+    +'<span class="pill goldy">اجمعها ثم عُد للبيت</span>';
   const kh=e=>{const k={ArrowUp:'U',ArrowDown:'D',ArrowLeft:'L',ArrowRight:'R'}[e.key]; if(k){e.preventDefault();move(k);}};
   window.addEventListener('keydown',kh);
-  /* سحب بالأصبع فوق المتاهة */
   let sx=0,sy=0;
   grid.addEventListener('touchstart',e=>{sx=e.touches[0].clientX; sy=e.touches[0].clientY;},{passive:true});
   grid.addEventListener('touchend',e=>{
@@ -644,11 +716,24 @@ function initMaze(){
     if(Math.max(Math.abs(dx),Math.abs(dy))<24)return;
     if(Math.abs(dx)>Math.abs(dy)) move(dx>0?'R':'L'); else move(dy>0?'D':'U');
   },{passive:true});
-  stopAllGames=()=>window.removeEventListener('keydown',kh);
+  mz.timer=setInterval(()=>{
+    if(mz.over)return;
+    mz.time--;
+    const t=document.getElementById('mzTime');
+    if(t){t.innerHTML=ic('clock',16)+' '+mz.time; if(mz.time<=10)t.className='pill warn';}
+    if(mz.time<=0){
+      clearInterval(mz.timer); mz.over=true; Snd.buzz();
+      showSheet({icon:'clock', title:'غربت الشمس!',
+        text:'انتهى الوقت قبل أن تعود ريم إلى البيت. المواطن الصالح يسبق الوقت — حاول من جديد وأسرع!',
+        btn:'إعادة المحاولة', cb:initMaze});
+    }
+  },1000);
+  stopAllGames=()=>{window.removeEventListener('keydown',kh); clearInterval(mz.timer);};
   drawMaze();
 }
 function idx(x,y){return y*mz.cols+x;}
 function move(d){
+  if(mz.over)return;
   let nx=mz.px,ny=mz.py;
   if(d==='U')ny--; if(d==='D')ny++; if(d==='L')nx--; if(d==='R')nx++;
   if(nx<0||ny<0||nx>=mz.cols||ny>=mz.rows)return;
@@ -657,70 +742,69 @@ function move(d){
   const cell=mz.cells[idx(nx,ny)];
   if(cell.dataset.star==='1'){cell.dataset.star='0'; mz.stars++; Snd.star();
     document.getElementById('mzStars').textContent='النجوم: '+mz.stars+' / '+mz.total;
-    toast('⭐ +1');}
+    toast('+1','star');}
   drawMaze();
   if(mz.px===mz.hx&&mz.py===mz.hy){
-    if(mz.stars>=mz.total) setTimeout(winChapter,250);
-    else {Snd.buzz(); toast('بقيت نجوم! '+mz.stars+' / '+mz.total+' ⭐');}
+    if(mz.stars>=mz.total){mz.over=true; clearInterval(mz.timer); setTimeout(winChapter,250);}
+    else {Snd.buzz(); toast('بقيت نجوم! '+mz.stars+' / '+mz.total);}
   }
 }
 function drawMaze(){
+  const px=Math.max(12,mz.size-4);
   mz.cells.forEach((c,i)=>{
     const x=i%mz.cols,y=Math.floor(i/mz.cols); const ch=mz.map[y][x];
-    if(x===mz.px&&y===mz.py){c.textContent='🦌';}
-    else if(ch==='H'){c.textContent='🏠';}
-    else if(c.dataset.star==='1'){c.textContent='⭐';}
-    else c.textContent='';
+    if(x===mz.px&&y===mz.py){c.innerHTML=ic('gazelleMini',px);}
+    else if(ch==='H'){c.innerHTML=ic('home',px);}
+    else if(c.dataset.star==='1'){c.innerHTML=ic('star',px);}
+    else c.innerHTML='';
   });
 }
 
-/* ---------- GAME 3: BASKET CATCH (أصعب: قلوب + تسارع) ---------- */
-const GOOD=['🐪','🕌','🌴','☕','🦅','⭐','🐟','🏰','📿','🇦🇪'];
-const BAD=['🍔','🎮','🍟','🤖','👟','🎪'];
+/* ---------- GAME 3: سلة الكنوز ---------- */
+const GOOD=['camel','mosque','palm','dallah','falcon','star','fish','fort','beads','flag'];
+const BAD=['burger','soda','robot','cap','controller'];
 let cg={};
 function initCatch(){
   const wrap=document.getElementById('gameBody'); wrap.innerHTML='';
   const area=document.createElement('div'); area.id='catchArea';
-  const basket=document.createElement('div'); basket.id='basket'; basket.textContent='🧺';
+  const basket=document.createElement('div'); basket.id='basket'; basket.innerHTML=ic('basket',50);
   area.appendChild(basket);
   wrap.appendChild(wrapStage(area));
   document.getElementById('gameFoot').innerHTML='<span class="pill" id="cgScore">النقاط: 0</span>'
-    +'<span class="pill warn" id="cgHearts">❤️❤️❤️</span>'
+    +'<span class="pill warn" id="cgHearts"></span>'
     +'<span class="pill goldy">الهدف: 15</span>';
   cg={score:0,goal:15,hearts:3,bx:150,items:[],running:true,area,basket,spawnT:0};
+  drawHearts();
   const W=()=>area.clientWidth;
-  basket.style.right=(W()/2-23)+'px'; cg.bx=W()/2;
-  const setPos=cx=>{const r=area.getBoundingClientRect();
-    let x=cx-r.left; x=Math.max(24,Math.min(W()-24,x));
-    basket.style.right=(W()-x-23)+'px'; cg.bx=x;};
+  basket.style.right=(W()/2-25)+'px'; cg.bx=W()/2;
+  const setPos=cx=>{const rc=area.getBoundingClientRect();
+    let x=cx-rc.left; x=Math.max(25,Math.min(W()-25,x));
+    basket.style.right=(W()-x-25)+'px'; cg.bx=x;};
   const pm=e=>{const cx=e.touches?e.touches[0].clientX:e.clientX; setPos(cx);};
   area.addEventListener('pointermove',pm);
   area.addEventListener('touchmove',pm,{passive:true});
-  const kh=e=>{if(e.key==='ArrowLeft')cg.bx=Math.max(24,cg.bx-28);
-    if(e.key==='ArrowRight')cg.bx=Math.min(W()-24,cg.bx+28);
-    basket.style.right=(W()-cg.bx-23)+'px';};
+  const kh=e=>{if(e.key==='ArrowLeft')cg.bx=Math.max(25,cg.bx-28);
+    if(e.key==='ArrowRight')cg.bx=Math.min(W()-25,cg.bx+28);
+    basket.style.right=(W()-cg.bx-25)+'px';};
   window.addEventListener('keydown',kh);
   let raf;
   const loop=()=>{
     if(!cg.running)return;
     cg.spawnT++;
-    const interval=Math.max(14, 30-Math.floor(cg.score*1.1));   /* تسارع الظهور */
+    const interval=Math.max(14, 30-Math.floor(cg.score*1.1));
     if(cg.spawnT>interval){cg.spawnT=0; spawnItem(area);}
     for(let i=cg.items.length-1;i>=0;i--){
       const it=cg.items[i]; it.y+=it.sp; it.el.style.top=it.y+'px';
-      const bTop=area.clientHeight-52;
-      if(it.y>bTop && it.y<area.clientHeight-8 && Math.abs(it.x-cg.bx)<40){
-        if(it.good){cg.score++; Snd.star(); toast('👍 +1');}
-        else{
-          cg.hearts--; Snd.buzz(); toast('✋ ليس من تراثنا!');
-          document.getElementById('cgHearts').textContent='❤️'.repeat(cg.hearts)+'🖤'.repeat(3-cg.hearts);
-        }
+      const bTop=area.clientHeight-56;
+      if(it.y>bTop && it.y<area.clientHeight-8 && Math.abs(it.x-cg.bx)<42){
+        if(it.good){cg.score++; Snd.star(); toast('+1','star');}
+        else{cg.hearts--; Snd.buzz(); toast('هذا ليس من تراثنا!'); drawHearts();}
         document.getElementById('cgScore').textContent='النقاط: '+cg.score;
         it.el.remove(); cg.items.splice(i,1);
         if(cg.hearts<=0){cg.running=false; cancelAnimationFrame(raf);
-          setTimeout(()=>showSheet({emoji:'😅',title:'انتهت القلوب!',
+          setTimeout(()=>showSheet({icon:'oops',title:'انتهت القلوب!',
             text:'التقطت أشياء ليست من كنوز الإمارات. ركّز جيدًا وحاول من جديد!',
-            btn:'إعادة المحاولة 🔄',cb:initCatch}),300);
+            btn:'إعادة المحاولة',cb:initCatch}),300);
           return;}
         if(cg.score>=cg.goal){cg.running=false; cancelAnimationFrame(raf);
           setTimeout(winChapter,200); return;}
@@ -734,28 +818,33 @@ function initCatch(){
   stopAllGames=()=>{cg.running=false; cancelAnimationFrame(raf);
     window.removeEventListener('keydown',kh);};
 }
+function drawHearts(){
+  let h='';
+  for(let i=0;i<3;i++)h+=ic(i<cg.hearts?'heart':'heartEmpty',17);
+  document.getElementById('cgHearts').innerHTML=h;
+}
 function spawnItem(area){
   const good=Math.random()>0.38;
-  const em=good?GOOD[Math.floor(Math.random()*GOOD.length)]:BAD[Math.floor(Math.random()*BAD.length)];
-  const el=document.createElement('div'); el.className='falling'; el.textContent=em;
-  const x=24+Math.random()*(area.clientWidth-48);
-  el.style.left=(x-17)+'px'; el.style.top='-30px';
+  const name=good?GOOD[Math.floor(Math.random()*GOOD.length)]:BAD[Math.floor(Math.random()*BAD.length)];
+  const el=document.createElement('div'); el.className='falling'; el.innerHTML=ic(name,38);
+  const x=25+Math.random()*(area.clientWidth-50);
+  el.style.left=(x-19)+'px'; el.style.top='-40px';
   area.appendChild(el);
-  cg.items.push({el,x,y:-30,sp:2.0+cg.score*0.09+Math.random()*1.4,good});  /* تسارع السقوط */
+  cg.items.push({el,x,y:-40,sp:2.0+cg.score*0.09+Math.random()*1.4,good});
 }
 
-/* ---------- GAME 4: SIMON (أصعب: ٧ جولات أسرع تبدأ بنغمتين) ---------- */
+/* ---------- GAME 4: نبض الاتحاد ---------- */
 let sm={};
 function initSimon(){
   const wrap=document.getElementById('gameBody'); wrap.innerHTML='';
   const grid=document.createElement('div'); grid.className='simon-grid';
-  const labels=['🕌','🇦🇪','🐪','🌟'];
+  const labels=['mosque','flag','camel','star'];
   for(let i=0;i<4;i++){const p=document.createElement('div'); p.className='spad s'+i;
-    p.textContent=labels[i]; p.onclick=()=>press(i); grid.appendChild(p);}
+    p.innerHTML=ic(labels[i],38,true); p.onclick=()=>press(i); grid.appendChild(p);}
   wrap.appendChild(wrapStage(grid));
   sm={seq:[],step:0,accept:false,pads:[...grid.children],round:0,target:7};
   document.getElementById('gameFoot').innerHTML='<span class="pill" id="smRound">الجولة: 0 / '+sm.target+'</span>'
-    +'<button class="btn ghost" id="smBtn">ابدأ ▶</button>';
+    +'<button class="btn ghost" id="smBtn">ابدأ</button>';
   document.getElementById('smBtn').onclick=nextRound;
   stopAllGames=()=>{sm.accept=false;};
 }
@@ -771,50 +860,51 @@ function nextRound(){
 function light(i,ms){return new Promise(r=>{const p=sm.pads[i]; p.classList.add('lit');
   Snd.pad(i); setTimeout(()=>{p.classList.remove('lit'); setTimeout(r,110);},ms);});}
 async function playSeq(){await wait(420);
-  const speed=Math.max(170,430-sm.round*40);        /* أسرع كل جولة */
+  const speed=Math.max(170,430-sm.round*40);
   for(const i of sm.seq){await light(i,speed);}
-  sm.accept=true; toast('كرّر التسلسل 🔁');}
+  sm.accept=true; toast('كرّر التسلسل');}
 function press(i){ if(!sm.accept)return;
   sm.pads[i].classList.add('lit'); Snd.pad(i);
   setTimeout(()=>sm.pads[i].classList.remove('lit'),140);
   if(i===sm.seq[sm.step]){ sm.step++;
     if(sm.step===sm.seq.length){ sm.accept=false;
       if(sm.round>=sm.target){setTimeout(winChapter,350);}
-      else {Snd.ding(); toast('✅ أحسنت'); setTimeout(nextRound,650);}
+      else {Snd.ding(); toast('أحسنت!'); setTimeout(nextRound,650);}
     }
   } else {
-    sm.accept=false; Snd.buzz(); toast('خطأ! أعد المحاولة 🔁');
+    sm.accept=false; Snd.buzz(); toast('خطأ! أعد المحاولة');
     const g=document.querySelector('.simon-grid');
     if(g)g.animate([{filter:'brightness(1)'},{filter:'brightness(1.6) saturate(2)'},{filter:'brightness(1)'}],{duration:400});
     setTimeout(()=>{sm.step=0; playSeq();},900);
   }
 }
 
-/* ---------- GAME 5: MEMORY (أصعب: ١٠ أزواج + مؤقت) ---------- */
-const MEM=['🐪','🕌','🌴','☕','🦅','🐚','🏰','🥁','⛵','🏺'];
+/* ---------- GAME 5: ذاكرة الأجداد ---------- */
+const MEM=['camel','mosque','palm','dallah','falcon','shell','fort','drum','dhow','pottery'];
 let mm={};
 function initMemory(){
   const wrap=document.getElementById('gameBody'); wrap.innerHTML='';
   const grid=document.createElement('div'); grid.id='memGrid';
-  const deck=[...MEM,...MEM].sort(()=>Math.random()-0.5);
+  const deck=MEM.concat(MEM).sort(()=>Math.random()-0.5);
   mm={first:null,lock:false,matched:0,moves:0,time:100,timer:null};
   deck.forEach(sym=>{
     const card=document.createElement('div'); card.className='mcard'; card.dataset.s=sym;
-    card.innerHTML='<div class="in"><div class="mface mfront">🌙</div><div class="mface mback">'+sym+'</div></div>';
+    card.innerHTML='<div class="in"><div class="mface mfront">'+ic('crescent',22)+'</div>'
+      +'<div class="mface mback">'+ic(sym,26)+'</div></div>';
     card.onclick=()=>flip(card); grid.appendChild(card);
   });
   wrap.appendChild(wrapStage(grid));
-  document.getElementById('gameFoot').innerHTML='<span class="pill" id="mmTime">⏱️ 100</span>'
+  document.getElementById('gameFoot').innerHTML='<span class="pill" id="mmTime">'+ic('clock',16)+' 100</span>'
     +'<span class="pill" id="mmMoves">المحاولات: 0</span>'
     +'<span class="pill goldy" id="mmPairs">الأزواج: 0 / 10</span>';
   mm.timer=setInterval(()=>{
     mm.time--;
     const t=document.getElementById('mmTime');
-    if(t){t.textContent='⏱️ '+mm.time; if(mm.time<=15)t.className='pill warn';}
+    if(t){t.innerHTML=ic('clock',16)+' '+mm.time; if(mm.time<=15)t.className='pill warn';}
     if(mm.time<=0){clearInterval(mm.timer); mm.lock=true; Snd.buzz();
-      showSheet({emoji:'⏰',title:'انتهى الوقت!',
+      showSheet({icon:'clock',title:'انتهى الوقت!',
         text:'ذاكرة الأجداد تحتاج تركيزًا أكبر. أعد المحاولة وكن أسرع!',
-        btn:'إعادة المحاولة 🔄',cb:initMemory});}
+        btn:'إعادة المحاولة',cb:initMemory});}
   },1000);
   stopAllGames=()=>clearInterval(mm.timer);
 }
@@ -841,7 +931,8 @@ function flip(card){
    toast & confetti
    ================================================================ */
 let toastT;
-function toast(m){const t=document.getElementById('toast'); t.textContent=m; t.classList.add('show');
+function toast(m,icn){const t=document.getElementById('toast');
+  t.innerHTML=(icn?ic(icn,15):'')+m; t.classList.add('show');
   clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('show'),1100);}
 function fireConfetti(){const c=document.getElementById('confetti'); c.innerHTML='';
   const cols=['#0b7a4b','#c8102e','#c9a227','#ffffff','#0a84ff'];

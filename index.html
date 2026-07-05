@@ -233,15 +233,48 @@ body{
   background:rgba(28,28,30,.92); color:#fff; padding:10px 18px; border-radius:14px; font-size:14px;
   font-weight:700; z-index:260; opacity:0; transition:opacity .3s; white-space:nowrap}
 .toast.show{opacity:1}
+.toast .ic{margin-inline-end:4px}
+
+/* ===== custom icon system (بديل الإيموجي) ===== */
+.ic{display:inline-flex; align-items:center; justify-content:center; vertical-align:middle}
+.ic svg{width:100%; height:100%; display:block}
+.wico svg{filter:brightness(0) invert(1)}
+.big .ic{width:62px; height:62px}
+#sndBtn .ic{width:22px; height:22px}
+.ch-emoji .ic{width:36px; height:36px}
+.chip .f .ic{width:32px; height:32px}
+.falling{width:38px; height:38px; font-size:0}
+.falling .ic{width:100%; height:100%}
+#basket{width:50px; font-size:0}
+#basket .ic{width:100%; height:100%}
+.spad{font-size:0}
+.spad .ic{width:38px; height:38px}
+.mface{font-size:0}
+.mface .ic{width:26px; height:26px}
+.mfront .ic{width:22px; height:22px}
+.mcell{font-size:0}
+.mcell .ic{width:88%; height:88%}
+.pill .ic{width:16px; height:16px; margin-inline-start:4px}
+.btn .ic{width:20px; height:20px}
+.sec-title .ic{width:17px; height:17px; margin-inline-end:4px}
+
+/* connect-the-dots game */
+.cn-host svg{width:100%; display:block}
+.cn-dot circle{transition:stroke .15s, opacity .3s}
 </style>
 </head>
 <body>
 <div id="device">
   <div class="statusbar">
     <span id="clock">9:41</span>
-    <span class="icons">􀙇 􀖀 <span style="font-weight:800">100%</span> 􀛨</span>
+    <span class="icons">
+      <svg viewBox="0 0 20 14" width="17" height="12"><g fill="#2b2418"><rect x="0" y="9" width="3" height="4" rx="1"/><rect x="5" y="6.5" width="3" height="6.5" rx="1"/><rect x="10" y="4" width="3" height="9" rx="1"/><rect x="15" y="1" width="3" height="12" rx="1"/></g></svg>
+      <svg viewBox="0 0 24 20" width="17" height="14"><path d="M3 7 q9 -7 18 0 M6.5 10.5 q5.5 -4.5 11 0 M9.8 13.8 q2.2 -1.8 4.4 0" stroke="#2b2418" stroke-width="2" fill="none" stroke-linecap="round"/><circle cx="12" cy="17" r="1.6" fill="#2b2418"/></svg>
+      <span style="font-weight:800">100%</span>
+      <svg viewBox="0 0 30 14" width="25" height="12"><rect x="1" y="2" width="24" height="10" rx="3" fill="none" stroke="#2b2418" stroke-width="1.6"/><rect x="3" y="4" width="20" height="6" rx="1.5" fill="#2b2418"/><path d="M27 5 v4 q2 -0.5 2 -2 q0 -1.5 -2 -2Z" fill="#2b2418"/></svg>
+    </span>
   </div>
-  <button id="sndBtn" title="الصوت">🔊</button>
+  <button id="sndBtn" title="الصوت"></button>
 
   <!-- HOME -->
   <section id="home" class="screen active">
@@ -254,7 +287,7 @@ body{
       <div class="necklace"><div class="neck-label" id="neckLabel">جواهر العقد: ٠ / ٥</div><div id="neckHost"></div></div>
       <div class="chapter-grid" id="chapterGrid"></div>
       <div class="flag-strip"></div>
-      <div style="color:var(--muted); font-size:12px; padding-bottom:20px">اجمع الجواهر الخمس ليكتمل العقد وتنال الجائزة الكبرى ✨</div>
+      <div style="color:var(--muted); font-size:12px; padding-bottom:20px">اجمع الجواهر الخمس ليكتمل العقد وتنال الجائزة الكبرى</div>
     </div>
     </div>
   </section>
@@ -285,7 +318,7 @@ body{
 
   <div class="overlay" id="overlay">
     <div class="sheet">
-      <div class="big" id="ovEmoji">🎉</div>
+      <div class="big" id="ovEmoji"></div>
       <div id="ovGem" style="display:none" class="gem-earn"></div>
       <h3 id="ovTitle">أحسنت!</h3>
       <p id="ovText"></p>
