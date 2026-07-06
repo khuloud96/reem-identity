@@ -246,7 +246,7 @@ const AR_N=['٠','١','٢','٣','٤','٥'];
 const CH = [
  {
   key:'deen', name:'الدِّين', tag:'المحطة الأولى: القرية القديمة', icon:'mosque',
-  gemColor:'#0b7a4b', gemName:'جوهرة الإيمان', game:'connect',
+  gemColor:'#0b7a4b', gemName:'جوهرة الدِّين', game:'connect',
   pages:[
    { scene:'dawn', lead:'قبل الفجر',
      text:'انطلق سيف وريم مع الجدّ سالم قبل الفجر، فالخريطة تشير إلى القرية القديمة التي وُلد فيها الجد. وصلوا والنجوم ما تزال في السماء… وفجأة علا صوتٌ هادئ فوق البيوت كلها: «اللهُ أكبر». خرج الناس من بيوت الطين نحو المسجد الصغير، وحمل سيف قِربة الماء يساعد المتوضّئين، تمامًا كما كان يفعل الجد وهو في عمره.',
@@ -277,14 +277,14 @@ const CH = [
  },
  {
   key:'wala', name:'الولاء', tag:'المحطة الثانية: ساحة العلم', icon:'flag',
-  gemColor:'#c8102e', gemName:'جوهرة الوفاء', game:'simon',
+  gemColor:'#c8102e', gemName:'جوهرة الولاء', game:'simon',
   pages:[
    { scene:'flag', lead:'صباحُ العلم',
      text:'في صباح اليوم التالي كان «يوم العلم» في مدرسة سيف. وقف الطلاب صفوفًا مرتّبة، وارتفع العلم بألوانه الأربعة مع النشيد الوطني. وضع سيف يده على قلبه، أما ريم فراقبت من وراء السور — غزالةٌ عند باب المدرسة؟ ضحك الأطفال كلهم! لكنّ أحدًا لم ينسَ أن يقف باحترام.',
      whisper:'رأت ريم الفخر يلمع في كل العيون في اللحظة نفسها… كأن العلم خيطٌ يشدّ القلوب إلى الأعلى معًا.' },
    { scene:'union', lead:'حكاية بيتٍ واحد',
      text:'دعت المعلمةُ الجدَّ سالم ليحكي للطلاب. قال: «كنا سبع إمارات متفرقة، لكل واحدةٍ رايتها. وفي الثاني من ديسمبر عام ١٩٧١ اجتمع الآباء المؤسسون بقيادة الشيخ زايد، طيّب الله ثراه، فصرنا بيتًا واحدًا اسمه الإمارات». ثم أخرج الخريطة: «الولاء أن تحبّ هذا البيت وتحميه وتفرح له… وها هي الإشارة الثانية تلمع!»',
-     whisper:'«جوهرة الوفاء لمن يحفظ نبض الاتحاد ولا يخطئ فيه» — هكذا كُتب على الخريطة.' }
+     whisper:'«جوهرة الولاء لمن يحفظ نبض الاتحاد ولا يخطئ فيه» — هكذا كُتب على الخريطة.' }
   ],
   discover:{
    chips:[
@@ -308,14 +308,14 @@ const CH = [
  },
  {
   key:'muwatana', name:'المواطَنة', tag:'المحطة الثالثة: حيّنا الجميل', icon:'handshake',
-  gemColor:'#0a84ff', gemName:'جوهرة المسؤولية', game:'maze',
+  gemColor:'#0a84ff', gemName:'جوهرة المواطَنة', game:'maze',
   pages:[
    { scene:'rules', lead:'في طريق العودة',
      text:'بعد المدرسة عادوا مشيًا عبر الحيّ. عند الإشارة الحمراء وقفت السيارات كلها فعبر الأطفال بأمان. قال الجد: «انظرا… حين يحترم كلٌّ منا القانون، يصير الطريق أمانًا للجميع». وعلى الرصيف رأت ريم فتاةً تنحني وتلتقط علبةً وقعت من أحدهم وتضعها في السلة، دون أن يطلب منها أحد.',
      whisper:'فهمت ريم أن البلد ليس أرضًا فقط… بل ناسٌ يحفظون مكانهم كأنه بيتهم.' },
    { scene:'clean', lead:'الحيّ بيتُنا الكبير',
      text:'وجدوا جيران الحي متجمعين يتطوعون لتنظيف الحديقة وزراعة شتلات الغاف. انضم سيف إليهم فورًا، وحملت ريم على ظهرها سلال الشتلات فصفّق لها الصغار! قال الجد: «المواطن الصالح يأخذ حقّه بأدب ويؤدي واجبه بحب». وإذا بالإشارة الثالثة تلمع فوق الحديقة!',
-     whisper:'«جوهرة المسؤولية لمن يجمع النجوم كلها ويعود إلى البيت قبل غروب الشمس» — قالت الخريطة.' }
+     whisper:'«جوهرة المواطَنة لمن يجمع النجوم كلها ويعود إلى البيت قبل غروب الشمس» — قالت الخريطة.' }
   ],
   discover:{
    chips:[
@@ -339,14 +339,14 @@ const CH = [
  },
  {
   key:'thaqafa', name:'الثقافة', tag:'المحطة الرابعة: مجلس الجد', icon:'dallah',
-  gemColor:'#c9a227', gemName:'جوهرة الكرم', game:'catch',
+  gemColor:'#c9a227', gemName:'جوهرة الثقافة', game:'catch',
   pages:[
    { scene:'majlis', lead:'ليلةُ المجلس',
      text:'في المساء امتلأ مجلس الجد سالم بالضيوف. تعلّم سيف الليلة درسًا جديدًا: القهوة العربية تُقدَّم باليد اليمنى، وللأكبر سنًا أولًا، والسلام قبل الكلام. ثم ألقى العمّ خليفة قصيدةً نبطية عن الوطن فتمايل الحضور طربًا، وريم ترهف أذنيها الطويلتين خلف الباب.',
      whisper:'أدركت ريم أن الثقافة ليست في الكتب فقط… بل في طريقة الكلام، وتقديم القهوة، واحترام الكبير.' },
    { scene:'arts', lead:'فرحُ الجيران',
      text:'وكان عند الجيران عرسٌ تلك الليلة: نساءٌ ينقشن الحناء على الأيادي الصغيرة، وثوبٌ يتلألأ بخيوط «التلّي» الذهبية، وصبيةٌ يؤدّون «العيّالة» على إيقاع الطبول. همس الجد: «هذه ألواننا التي تميّزنا عن كل شعوب الأرض». وفوق دلّة القهوة… لمعت الإشارة الرابعة!',
-     whisper:'«جوهرة الكرم لمن يملأ سلّته من كنوزنا الأصيلة ويعرفها من الدخيل» — قالت الخريطة.' }
+     whisper:'«جوهرة الثقافة لمن يملأ سلّته من كنوزنا الأصيلة ويعرفها من الدخيل» — قالت الخريطة.' }
   ],
   discover:{
    chips:[
@@ -370,14 +370,14 @@ const CH = [
  },
  {
   key:'turath', name:'التُّراث', tag:'المحطة الأخيرة: الميناء القديم', icon:'camel',
-  gemColor:'#dcd6c6', gemName:'لؤلؤة الأجداد', game:'memory',
+  gemColor:'#dcd6c6', gemName:'جوهرة التُّراث', game:'memory',
   pages:[
    { scene:'sea', lead:'حيث بدأت الحكاية',
      text:'في الصباح الأخير قادتهم الخريطة إلى الميناء القديم. وقفوا أمام سفينة غوصٍ خشبية عتيقة، فأخرج الجد صورةً قديمة بالأبيض والأسود: «هذا أبي — جدُّ جدِّك يا سيف — كان غوّاصًا. يحبس نفَسه ويغوص إلى قاع البحر ليجمع اللؤلؤ ويطعم أهله… قبل النفط بزمنٍ طويل. من هنا بدأت حكايتنا».',
      whisper:'شعرت ريم أن لكل شيءٍ قديم حكاية… وأن الأجداد تركوا كنزًا أغلى من اللؤلؤ: صبرهم وحكمتهم.' },
    { scene:'falcon', lead:'الصقرُ والنخلة',
      text:'في مهرجان التراث المجاور حطّ صقرٌ مدرَّب على يد فتى، ومرّت هجنٌ تستعد للسباق، وامتد النخيل كجيشٍ أخضر يعطي التمر والظل. قال الجد: «من لا يعرف ماضيه لا يعرف طريقه». نظر سيف إلى العقد: بقيت جوهرةٌ واحدة… فلمعت الإشارة الأخيرة فوق صندوق الذكريات!',
-     whisper:'«لؤلؤة الأجداد لمن يحفظ ذاكرتهم ويطابق كنوزهم قبل فوات الوقت» — آخر ما كُتب على الخريطة.' }
+     whisper:'«جوهرة التُّراث لمن يحفظ ذاكرة الأجداد ويطابق كنوزهم قبل فوات الوقت» — آخر ما كُتب على الخريطة.' }
   ],
   discover:{
    chips:[
@@ -402,8 +402,10 @@ const CH = [
 ];
 
 /* ---------- gems progress ---------- */
-let gems = JSON.parse(localStorage.getItem('reem_gems')||'[]');
-function saveGems(){localStorage.setItem('reem_gems',JSON.stringify(gems));}
+/* يبدأ كل لاعب من جديد في كل مرة يُفتح فيها التطبيق (لا يُحفظ التقدّم) */
+let gems = [];
+try{localStorage.removeItem('reem_gems');}catch(e){}
+function saveGems(){/* progress intentionally not persisted — resets on every open */}
 
 /* ================================================================
    HOME
@@ -610,7 +612,7 @@ function winChapter(){
 function grandFinale(){
   fireConfetti(); Snd.fanfare(); setTimeout(()=>{Snd.fanfare(); fireConfetti();},700);
   showSheet({icon:'trophy', title:'اكتمل عقدُ الهوية!',
-    text:'خمس جواهر تلمع في العقد: الإيمان، والوفاء، والمسؤولية، والكرم، ولؤلؤة الأجداد. علّقه الجد سالم في صدر المجلس وقال: «العقد الحقيقي صار في قلبيكما… هذا هو معنى أن تكون إماراتيًا».',
+    text:'خمس جواهر تلمع في العقد: الدِّين، والولاء، والمواطَنة، والثقافة، والتُّراث. علّقه الجد سالم في صدر المجلس وقال: «العقد الحقيقي صار في قلبيكما… هذا هو معنى أن تكون إماراتيًا».',
     btn:'العودة إلى البداية', cb:goHome});
 }
 
@@ -632,23 +634,25 @@ function wrapStage(node){const s=document.createElement('div'); s.className='gam
 function wait(ms){return new Promise(r=>setTimeout(r,ms));}
 
 /* ---------- GAME 1: وصّل الأنوار — شبكة أنابيب مثل Flow Free ---------- */
-const FG_LEVELS=[{N:5,K:4},{N:6,K:5},{N:7,K:6}];
-const FG_COLORS=['#e63946','#2563eb','#f4c430','#16a34a','#f97316','#9333ea'];
-const FG_ICONS=['mosque','crescent','dallah','palm','beads','fort1'];
+/* أصعب: شبكات أكبر، أزواج أكثر، ويجب ملء كل المربعات (تغطية كاملة) */
+const FG_LEVELS=[{N:6,K:5},{N:7,K:6},{N:8,K:7}];
+const FG_COLORS=['#e63946','#2563eb','#f4c430','#16a34a','#f97316','#9333ea','#0891b2'];
+const FG_ICONS=['mosque','crescent','dallah','palm','beads','fort1','camel'];
 let fg={};
 function initConnect(){fg={level:0}; buildFlow(); stopAllGames=()=>{};}
 function fgNb(c,N){const x=c%N,y=(c/N)|0,r=[];
   if(x>0)r.push(c-1); if(x<N-1)r.push(c+1); if(y>0)r.push(c-N); if(y<N-1)r.push(c+N); return r;}
-/* توليد لوحة قابلة للحل دائمًا: نحفر مسارات متعرجة غير متقاطعة ثم نظهر طرفيها فقط */
+/* توليد لوحة قابلة للحل دائمًا: نحفر مسارات ثم نمدّها لتغطي كامل الشبكة (أصعب) */
 function fgCarve(N,K){
-  for(let t=0;t<900;t++){
+  let best=null;
+  for(let t=0;t<1600;t++){
     const used=Array(N*N).fill(-1), paths=[]; let ok=true;
     for(let k=0;k<K&&ok;k++){
       const free=[]; used.forEach((v,i)=>{if(v<0)free.push(i);});
       if(!free.length){ok=false;break;}
       let cur=free[(Math.random()*free.length)|0];
       const path=[cur]; used[cur]=k;
-      const target=4+((Math.random()*(N+2))|0);
+      const target=5+((Math.random()*(N+2))|0);
       while(path.length<target){
         const nb=fgNb(cur,N).filter(c=>used[c]<0);
         if(!nb.length)break;
@@ -656,15 +660,33 @@ function fgCarve(N,K){
       }
       if(path.length<3)ok=false; else paths.push(path);
     }
-    if(ok)return paths;
+    if(!ok)continue;
+    /* مدّ أطراف المسارات لملء المربعات الفارغة → لوحة أكثر امتلاءً وصعوبة */
+    let changed=true, guard=N*N*6;
+    while(changed && guard-->0){
+      changed=false;
+      for(let k=0;k<paths.length;k++){
+        const p=paths[k];
+        for(const head of [false,true]){
+          const e=head?p[0]:p[p.length-1];
+          const nb=fgNb(e,N).filter(c=>used[c]<0);
+          if(nb.length){const c=nb[(Math.random()*nb.length)|0];
+            used[c]=k; head?p.unshift(c):p.push(c); changed=true;}
+        }
+      }
+    }
+    const filled=used.filter(v=>v>=0).length;
+    if(filled===N*N) return {paths, full:true};
+    if(!best || filled>best.filled) best={paths, full:false, filled};
   }
-  return null;
+  return best;  /* احتياط: لوحة شبه ممتلئة (لا نشترط التغطية الكاملة حينها) */
 }
 function buildFlow(){
   const L=FG_LEVELS[fg.level], N=L.N;
-  let sol=fgCarve(N,L.K);
-  fg.N=N; fg.cell=44; fg.S=N*44;
-  fg.pairs=sol.map((p,k)=>({icon:FG_ICONS[k],color:FG_COLORS[k],a:p[0],b:p[p.length-1],sol:p,path:[],done:false}));
+  const res=fgCarve(N,L.K);
+  fg.requireFull=res.full;
+  fg.N=N; fg.cell=Math.floor(320/N); fg.S=N*fg.cell;
+  fg.pairs=res.paths.map((p,k)=>({icon:FG_ICONS[k],color:FG_COLORS[k],a:p[0],b:p[p.length-1],sol:p,path:[],done:false}));
   fg.drawing=-1;
   const wrap=document.getElementById('gameBody'); wrap.innerHTML='';
   const host=document.createElement('div'); host.className='cn-host';
@@ -691,6 +713,7 @@ function buildFlow(){
   document.getElementById('gameFoot').innerHTML=
     '<span class="pill">المرحلة: '+AR_N[fg.level+1]+' / ٣</span>'
     +'<span class="pill goldy" id="fgLeft">وصلت: 0 / '+fg.pairs.length+'</span>'
+    +(fg.requireFull?'<span class="pill" id="fgCov">املأ كل المربعات</span>':'')
     +'<button class="btn ghost" id="fgReset" style="padding:9px 14px">'+ic('refresh',18)+'</button>';
   document.getElementById('fgReset').onclick=()=>{fg.pairs.forEach(p=>{p.path=[];p.done=false;});
     fg.drawing=-1; fgRender(); Snd.flip();};
@@ -732,10 +755,22 @@ function fgDrag(c){
   }
   fgRender();
 }
+function fgCoverage(){
+  const cov=new Set();
+  fg.pairs.forEach(p=>{p.path.forEach(c=>cov.add(c)); cov.add(p.a); cov.add(p.b);});
+  return cov.size;
+}
 function fgCheckWin(){
   const done=fg.pairs.filter(p=>p.done).length;
   document.getElementById('fgLeft').textContent='وصلت: '+done+' / '+fg.pairs.length;
-  if(done===fg.pairs.length){
+  const total=fg.N*fg.N, cov=fgCoverage();
+  const covEl=document.getElementById('fgCov');
+  if(covEl)covEl.textContent='المربعات: '+cov+' / '+total;
+  const solved = done===fg.pairs.length && (!fg.requireFull || cov===total);
+  if(done===fg.pairs.length && fg.requireFull && cov<total){
+    Snd.buzz(); toast('وصلت الكل لكن بقيت مربعات فارغة — املأها كلها!');
+  }
+  if(solved){
     if(fg.level<2){fg.level++; toast('أحسنت! شبكة أكبر في المرحلة التالية','star'); setTimeout(buildFlow,900);}
     else setTimeout(winChapter,400);
   }
@@ -754,8 +789,9 @@ function fgRender(){
     }
     [p.a,p.b].forEach(c=>{
       const s=cell*.42, o=s/2;
+      const src='img/'+IMGS[p.icon];
       const inner=IMGS[p.icon]
-        ? '<image href="img/'+IMGS[p.icon]+'" x="'+(cx(c)-o)+'" y="'+(cy(c)-o)+'" width="'+s+'" height="'+s+'" clip-path="inset(0 round 6)"/>'
+        ? '<image href="'+src+'" x="'+(cx(c)-o)+'" y="'+(cy(c)-o)+'" width="'+s+'" height="'+s+'" clip-path="inset(0 round 6)"/>'
         : '<g transform="translate('+(cx(c)-o)+','+(cy(c)-o)+') scale('+(s/48)+')">'+iconInner(p.icon)+'</g>';
       ends+='<circle cx="'+cx(c)+'" cy="'+cy(c)+'" r="'+(cell*.4)+'" fill="'+p.color+'"'+(p.done?'':' opacity=".92"')+'/>'
         +'<circle cx="'+cx(c)+'" cy="'+cy(c)+'" r="'+(cell*.3)+'" fill="#fffdf7"/>'
@@ -765,6 +801,8 @@ function fgRender(){
   document.getElementById('fgFill').innerHTML=fills;
   document.getElementById('fgPaths').innerHTML=lines;
   document.getElementById('fgEnds').innerHTML=ends;
+  const covEl=document.getElementById('fgCov');
+  if(covEl&&fg.requireFull)covEl.textContent='المربعات: '+fgCoverage()+' / '+(fg.N*fg.N);
 }
 
 /* ---------- GAME 2: المتاهة (مع مؤقت) ---------- */
